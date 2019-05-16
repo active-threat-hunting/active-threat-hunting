@@ -1,0 +1,45 @@
+---
+- name: add docker's repo key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  become: true
+  retries: 5
+- name: add docker repository for ubuntu 18.04
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+  become: true
+  retries: 5
+- name: wait for automatic system updates
+  become: true
+  shell: while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 1; done;
+- name: install docker-ce
+  apt:
+    name: docker-ce
+    state: latest
+    update_cache: yes
+  retries: 5
+  become: true
+- name: add ansible user to docker group
+  user:
+    name: ansible
+    append: yes
+    groups: docker
+  become: true
+  retries: 5
+- name: add python docker package
+  pip:
+    name:
+    - docker-py
+  become: true
+  retries: 5
+- name: enable and start docker
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+  become: true
+  retries: 5
+- name: reset connection to allow user to be a part of docker group
+  meta: reset_connection
