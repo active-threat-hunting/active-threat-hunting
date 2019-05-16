@@ -1,0 +1,60 @@
+---
+- name: pull mongo docker image
+  docker_image:
+    name: mongo
+    tag: 3
+- name: pull elasticsearch docker image
+  docker_image:
+    name: docker.elastic.co/elasticsearch/elasticsearch
+    tag: "{{ es_docker_tag }}"
+- name: pull graylog docker image
+  docker_image:
+    name: graylog/graylog
+    tag: "{{ graylog_docker_tag }}"
+- name: Create mongo volume
+  docker_volume:
+    name: mongo_data
+- name: Create elasticsearch volume
+  docker_volume:
+    name: elasticsearch_data
+- name: Create graylog journal volume
+  docker_volume:
+    name: graylog_journal
+- name: run mongo docker container
+  docker_container:
+    name: mongo
+    image: mongo
+    state: started
+    restart_policy: unless-stopped
+    volumes:
+    - mongo_data:/data/db
+- name: run elasticsearch docker container
+  docker_container:
+    name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:"{{ es_docker_tag }}"
+    state: started
+    restart_policy: unless-stopped
+    volumes:
+    - elasticsearch_data:/usr/share/elasticsearch/data
+    env:
+      http.host: "0.0.0.0"
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: "{{ es_java_opts }}"
+- name: run graylog docker container
+  docker_container:
+    name: graylog
+    image: graylog/graylog:"{{ graylog_docker_tag }}"
+    state: started
+    restart_policy: unless-stopped
+    network_mode: host
+    volumes:
+    - graylog_journal:/usr/share/graylog/data/journal
+    links:
+      - mongo
+      - elasticsearch
+    env:
+      GRAYLOG_PASSWORD_SECRET: "{{ graylog_password_secret }}"
+      GRAYLOG_ROOT_USERNAME: "{{ graylog_root_username }}"
+      GRAYLOG_ROOT_PASSWORD_SHA2: "{{ graylog_root_password_sha2 }}"
+      GRAYLOG_HTTP_EXTERNAL_URI: "{{ graylog_http_external_uri }}"
+      GRAYLOG_HTTP_PUBLISH_URI: "{{ graylog_http_publish_uri }}"
