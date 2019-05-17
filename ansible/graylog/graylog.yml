@@ -18,3 +18,4 @@
   roles:
   - {role: docker-setup}
   - {role: graylog-install}
+  #- {role: firewall-config}
