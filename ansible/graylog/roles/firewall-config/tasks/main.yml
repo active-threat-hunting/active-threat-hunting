@@ -4,36 +4,43 @@
     state: enabled
     policy: allow
   when: ansible_distribution == 'Ubuntu'
+  become: true
 - name: allow mongo from localhost
   ufw:
     rule: allow
     src: 127.0.0.1
     port: 27017
   when: ansible_distribution == 'Ubuntu'
+  become: true
 - name: allow elasticsearch from localhost
   ufw:
     rule: allow
     src: 127.0.0.1
     port: 9200
   when: ansible_distribution == 'Ubuntu'
+  become: true
 - name: allow elasticsearch from localhost
   ufw:
     rule: allow
     src: 127.0.0.1
     port: 9300
   when: ansible_distribution == 'Ubuntu'
+  become: true
 - name: deny mongo from anywhere
   ufw:
     rule: deny
     port: 27017
   when: ansible_distribution == 'Ubuntu'
+  become: true
 - name: deny elasticsearch from anywhere
   ufw:
     rule: deny
     port: 9200
   when: ansible_distribution == 'Ubuntu'
+  become: true
 - name: deny elasticsearch from anywhere
   ufw:
     rule: deny
     port: 9300
   when: ansible_distribution == 'Ubuntu'
+  become: true
