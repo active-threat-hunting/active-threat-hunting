@@ -35,7 +35,6 @@
     owner: graylog-docker
     mode: 0700
   become: true
-- name: copy 
 - name: create graylog_data volume in /opt/graylog-docker/graylog_data
   file:
     path: /opt/graylog-docker/graylog_data/config
