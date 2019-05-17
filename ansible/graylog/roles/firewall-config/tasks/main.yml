@@ -4,10 +4,14 @@
     state: enabled
     policy: allow
     rule: allow
-    src: 127.0.0.1
-    port: 27017
+    name: OpenSSH
   when: ansible_distribution == 'Ubuntu'
   become: true
+- name: allow mongo from localhost
+  ufw:
+    rule: allow
+    src: 127.0.0.1
+    port: 27017
 - name: allow elasticsearch from localhost
   ufw:
     rule: allow
