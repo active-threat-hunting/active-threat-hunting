@@ -22,7 +22,7 @@
     protocol: tcp
     source: 127.0.0.1
     jump: ACCEPT
-    to_ports: 27017
+    destination_port: 27017
   become: true
 - name: allow elasticsearch from localhost
   iptables:
@@ -30,7 +30,7 @@
     protocol: tcp
     source: 127.0.0.1
     jump: ACCEPT
-    to_ports: 9200
+    destination_port: 9200
   become: true
 - name: allow elasticsearch from localhost
   iptables:
@@ -38,28 +38,28 @@
     protocol: tcp
     source: 127.0.0.1
     jump: ACCEPT
-    to_ports: 9300
+    destination_port: 9300
   become: true
 - name: deny mongo from anywhere
   iptables:
     chain: INPUT
     protocol: tcp
     jump: DROP
-    to_ports: 27017
+    destination_port: 27017
   become: true
 - name: deny elasticsearch from anywhere
   iptables:
     chain: INPUT
     protocol: tcp
     jump: DROP
-    to_ports: 9200
+    destination_port: 9200
   become: true
 - name: deny elasticsearch from anywhere
   iptables:
     chain: INPUT
     protocol: tcp
     jump: DROP
-    to_ports: 9300
+    destination_port: 9300
   become: true
 - name: save to iptables.rules
   shell: /sbin/iptables-save > /etc/iptables.rules
