@@ -49,6 +49,7 @@
       MYSQL_DATABASE: "{{ mysql_database }}"
       MYSQL_USER: "{{ mysql_user }}"
       MYSQL_PASSWORD: "{{ mysql_password }}"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     volumes:
     - fleet_mysql_data:/var/lib/mysql
   become: true
