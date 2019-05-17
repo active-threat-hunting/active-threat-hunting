@@ -1,0 +1,128 @@
+---
+- name: create fleet system user
+  user:
+    name: fleet-docker
+    comment: 'fleet docker system user'
+    system: true
+    uid: 2160
+  become: true
+- name: pull mysql docker image
+  docker_image:
+    name: mysql
+    tag: latest
+  become: true
+- name: pull redis docker image
+  docker_image:
+    name: redis
+    tag: latest
+  become: true
+- name: pull mailhog docker image
+  docker_image:
+    name: mailhog/mailhog
+    tag: latest
+  become: true
+- name: pull kolide fleet docker image
+  docker_image:
+    name: kolide/fleet
+    tag: latest
+  become: true
+- name: create mysql volume
+  docker_volume:
+    name: fleet_mysql_data
+  become: true
+- name: create redis volume
+  docker_volume:
+    name: fleet_redis_data
+  become: true
+- name: create osquery_data volume
+  docker_volume:
+    name: fleet_osquery_data
+  become: true
+- name: run mysql docker container
+  docker_container:
+    name: fleet_mysql
+    image: mysql:latest
+    state: started
+    restart_policy: unless-stopped
+    user: 2160
+    env:
+      MYSQL_DATABASE: "{{ mysql_database }}"
+      MYSQL_USER: "{{ mysql_user }}"
+      MYSQL_PASSWORD: "{{ mysql_password }}"
+    volumes:
+    - fleet_mysql_data:/var/lib/mysql
+  become: true
+- name: run redis docker container
+  docker_container:
+    name: fleet_redis
+    image: redis
+    state: started
+    restart_policy: unless-stopped
+    volumes:
+    - redis_data:/data
+    user: 2160
+  become: true
+- name: run mailhog docker container
+  docker_container:
+    name: fleet_mailhog
+    image: mailhog/mailhog:latest
+    state: started
+    restart_policy: unless-stopped
+  become: true
+- name: create fleet docker volume
+  file:
+    path: /opt/fleet-docker
+    mode: 0700
+    owner: 2160
+    state: directory
+  become: true
+- name: generate ssl key
+  shell: sudo openssl genrsa -out /opt/fleet-docker/server.key 4096
+  become: true
+- name: generate csr
+  shell: openssl req -new -key /opt/fleet-docker/server.key -out /opt/fleet-docker/server.csr -subj "{{ self_sign_ssl_options }}"
+  become: true
+- name: generate cert
+  shell: openssl x509 -req -days 366 -in /opt/fleet-docker/server.csr -signkey /opt/fleet-docker/server.key -out /opt/fleet-docker/server.cert
+  become: true
+- name: change ownership of /opt/fleet-docker to fleet-docker
+  file:
+    path: /opt/fleet-docker/server.csr
+    owner: 2160
+    mode: 0600
+  become: true
+- name: change ownership of /opt/fleet-docker to fleet-docker
+  file:
+    path: /opt/fleet-docker/server.key
+    owner: 2160
+    mode: 0600
+  become: true
+- name: change ownership of /opt/fleet-docker to fleet-docker
+  file:
+    path: /opt/fleet-docker/server.cert
+    owner: 2160
+    mode: 0600
+  become: true
+- name: run kolide fleet docker container
+  docker_container:
+    name: fleet
+    image: kolide/fleet:latest
+    state: started
+    restart_policy: unless-stopped
+    ports:
+    - 8080:8080
+    links:
+    - fleet_redis:redis
+    - fleet_mysql:mysql
+    - fleet_mailhog:mailhog
+    env:
+      KOLIDE_MYSQL_ADDRESS: mysql:3306
+      KOLIDE_MYSQL_DATABASE: "{{ mysql_database }}"
+      KOLIDE_MYSQL_USERNAME: "{{ mysql_user }}"
+      KOLIDE_MYSQL_PASSWORD: "{{ mysql_password }}"
+      KOLIDE_REDIS_ADDRESS: redis:6379
+      KOLIDE_SERVER_CERT: /etc/kolide/server.cert
+      KOLIDE_SERVER_KEY: /etc/kolide/server.key
+    volumes:
+    - /opt/fleet-docker:/etc/kolide/
+  become: true
