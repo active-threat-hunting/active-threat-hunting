@@ -1,10 +1,4 @@
 ---
-- name: enable iptables
-  systemd:
-    name: iptables
-    state: started
-    enabled: yes
-  become: true
 - name: copy iptables-restore service
   file:
     src: iptables-restore.service
@@ -66,4 +60,7 @@
     protocol: tcp
     jump: DROP
     to_port: 9300
+  become: true
+- name: save to iptables.rules
+  shell: /sbin/iptables-save > /etc/iptables.rules
   become: true
