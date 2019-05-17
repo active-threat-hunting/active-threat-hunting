@@ -21,6 +21,13 @@
     name: graylog/graylog
     tag: "{{ graylog_docker_tag }}"
   become: true
+- name: create mongo_data directory
+  file:
+    path: /opt/graylog-docker/mongo_data
+    state: directory
+    owner: 2150
+    mode: 0700
+  become: true
 - name: create elasticsearch volume
   docker_volume:
     name: elasticsearch_data
