@@ -1,12 +1,12 @@
 ---
 - name: copy iptables-restore service
-  file:
+  copy:
     src: iptables-restore.service
     dest: /etc/systemd/system/iptables-restore.service
     mode: 0600
   become: true
 - name: copy iptables-restore.sh script
-  file:
+  copy:
     src: iptables-restore.sh
     dest: /opt/iptables-restore.sh
     mode: 0700
