@@ -28,19 +28,70 @@
     owner: graylog-docker
     mode: 0700
   become: true
-- name: create graylog_data volume in /opt/graylog-docker/graylog_data
-  file:
-    path: /opt/graylog-docker/graylog_data
-    state: directory
-    owner: graylog-docker
-    mode: 0700
-  become: true
 - name: create graylog_journal volume in /opt/graylog-docker/graylog_journal
   file:
     path: /opt/graylog-docker/graylog_journal
     state: directory
     owner: graylog-docker
     mode: 0700
+  become: true
+- name: copy 
+- name: create graylog_data volume in /opt/graylog-docker/graylog_data
+  file:
+    path: /opt/graylog-docker/graylog_data/config
+    state: directory
+    owner: graylog-docker
+    mode: 0700
+  become: true
+- name: place graylog.conf in /opt/graylog-docker/graylog_data/config
+  copy:
+    src: graylog.conf
+    dest: /opt/graylog-docker/graylog_data/config/graylog.conf
+    owner: graylog-docker
+    mode: 0600
+  become: true
+- name: replace http_external_uri in /opt/graylog-docker/graylog_data/config/graylog.conf
+  replace:
+    path: /opt/graylog-docker/graylog_data/config/graylog.conf
+    regexp: '#http_external_uri ='
+    replace: "http_external_uri = {{ graylog_http_external_uri }}"
+  become: true
+- name: replace http_publish_uri in /opt/graylog-docker/graylog_data/config/graylog.conf
+  replace:
+    path: /opt/graylog-docker/graylog_data/config/graylog.conf
+    regexp: '#http_publish_uri = http://192.168.1.1:9000/'
+    replace: "http_publish_uri = {{ graylog_http_publish_uri }}"
+  become: true
+- name: replace root_password_sha2 in /opt/graylog-docker/graylog_data/config/graylog.conf
+  replace:
+    path: /opt/graylog-docker/graylog_data/config/graylog.conf
+    regexp: 'root_password_sha2 ='
+    replace: "root_password_sha2 = {{ graylog_root_password_sha2 }}"
+  become: true
+- name: replace root_username in /opt/graylog-docker/graylog_data/config/graylog.conf
+  replace:
+    path: /opt/graylog-docker/graylog_data/config/graylog.conf
+    regexp: '#root_username = admin'
+    replace: "root_username = {{ graylog_root_username }}"
+  become: true
+- name: replace password_secret in /opt/graylog-docker/graylog_data/config/graylog.conf
+  replace:
+    path: /opt/graylog-docker/graylog_data/config/graylog.conf
+    regexp: '#http_external_uri ='
+    replace: "http_external_uri = {{ graylog_http_external_uri }}"
+  become: true
+- name: replace password_secret in /opt/graylog-docker/graylog_data/config/graylog.conf
+  replace:
+    path: /opt/graylog-docker/graylog_data/config/graylog.conf
+    regexp: 'password_secret ='
+    replace: "password_secret = = {{ graylog_password_secret }}"
+  become: true
+- name: place log4j2.xml in /opt/graylog-docker/graylog_data/config
+  copy:
+    src: log4j2.xml
+    dest: /opt/graylog-docker/graylog_data/config/log4j2.xml
+    owner: graylog-docker
+    mode: 0600
   become: true
 - name: create elasticsearch volume
   docker_volume:
@@ -87,7 +138,7 @@
     network_mode: host
     volumes:
     - /opt/graylog-docker/graylog_journal:/usr/share/graylog/data/journal
-    - /opt/graylog-docker/graylog_data:/usr/share/graylog/data
+    - /opt/graylog-docker/graylog_data:/usr/share/graylog/data/
     env:
       GRAYLOG_PASSWORD_SECRET: "{{ graylog_password_secret }}"
       GRAYLOG_ROOT_USERNAME: "{{ graylog_root_username }}"
