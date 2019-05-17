@@ -21,17 +21,30 @@
     name: graylog/graylog
     tag: "{{ graylog_docker_tag }}"
   become: true
-- name: Create mongo volume
-  docker_volume:
-    name: mongo_data
+- name: create mongo volume in /opt/graylog-docker/mongo_data
+  file:
+    path: /opt/graylog-docker/mongo_data
+    state: directory
+    owner: graylog-docker
+    mode: 0700
   become: true
-- name: Create elasticsearch volume
+- name: create graylog_data volume in /opt/graylog-docker/graylog_data
+  file:
+    path: /opt/graylog-docker/graylog_data
+    state: directory
+    owner: graylog-docker
+    mode: 0700
+  become: true
+- name: create graylog_journal volume in /opt/graylog-docker/graylog_journal
+  file:
+    path: /opt/graylog-docker/graylog_journal
+    state: directory
+    owner: graylog-docker
+    mode: 0700
+  become: true
+- name: create elasticsearch volume
   docker_volume:
     name: elasticsearch_data
-  become: true
-- name: Create graylog journal volume
-  docker_volume:
-    name: graylog_journal
   become: true
 - name: run mongo docker container
   docker_container:
@@ -39,11 +52,14 @@
     image: mongo:3
     state: started
     restart_policy: unless-stopped
+    user: 2150
     ports:
     - 27017:27017
     volumes:
-    - mongo_data:/data/db
-    user: 2150
+    - /opt/graylog-docker/mongo_data:/data/db
+  become: true
+- name: increase max memory for elasticsearch
+  shell: sysctl -w vm.max_map_count=262144
   become: true
 - name: run elasticsearch docker container
   docker_container:
@@ -57,7 +73,7 @@
     volumes:
     - elasticsearch_data:/usr/share/elasticsearch/data
     env:
-      http.host: "127.0.0.1"
+      http.host: "0.0.0.0"
       xpack.security.enabled: "false"
       ES_JAVA_OPTS: "{{ es_java_opts }}"
     user: 2150
@@ -70,7 +86,8 @@
     restart_policy: unless-stopped
     network_mode: host
     volumes:
-    - graylog_journal:/usr/share/graylog/data/journal
+    - /opt/graylog-docker/graylog_journal:/usr/share/graylog/data/journal
+    - /opt/graylog-docker/graylog_data:/usr/share/graylog/data
     env:
       GRAYLOG_PASSWORD_SECRET: "{{ graylog_password_secret }}"
       GRAYLOG_ROOT_USERNAME: "{{ graylog_root_username }}"
