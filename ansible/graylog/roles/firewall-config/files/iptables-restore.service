@@ -1,0 +1,9 @@
+[Unit]
+Description=Iptables service
+
+[Service]
+User=root
+ExecStart=/opt/iptables-restore.sh
+
+[Install]
+WantedBy=multi-user.target

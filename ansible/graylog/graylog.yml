@@ -15,7 +15,8 @@
     graylog_http_publish_uri: "http://127.0.0.1:9000/"  
     graylog_mongodb_uri: "mongodb://localhost/graylog"
     graylog_elasticsearch_hosts: "http://localhost:9200"
+    iptables_ssh_port: 22
   roles:
   - {role: docker-setup}
   - {role: graylog-install}
-  #- {role: firewall-config}
+  - {role: firewall-config}
