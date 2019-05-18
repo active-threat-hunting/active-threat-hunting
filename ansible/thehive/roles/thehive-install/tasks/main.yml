@@ -37,7 +37,6 @@
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.0
     state: started
     restart_policy: unless-stopped
-    network_mode: host
     volumes:
     - /opt/thehive-docker/elasticsearch:/usr/share/elasticsearch/data
     env:
