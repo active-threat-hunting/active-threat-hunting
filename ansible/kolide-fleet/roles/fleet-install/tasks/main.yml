@@ -106,13 +106,13 @@
     owner: 2160
     mode: 0600
   become: true
-- name: run kolide fleet docker container
+- name: prep fleet docker container mysql db
   docker_container:
     name: fleet
     image: kolide/fleet:latest
     state: started
-    restart_policy: unless-stopped
-    command: fleet prepare db 
+    command: fleet prepare db
+    detach: no
     ports:
     - 8080:8080
     links:
@@ -127,6 +127,30 @@
       KOLIDE_REDIS_ADDRESS: redis:6379
       KOLIDE_SERVER_CERT: /etc/kolide/server.cert
       KOLIDE_SERVER_KEY: /etc/kolide/server.key
+    volumes:
+    - /opt/fleet-docker:/etc/kolide/
+  become: true
+- name: run kolide fleet docker container
+  docker_container:
+    name: fleet
+    image: kolide/fleet:latest
+    state: started
+    restart_policy: unless-stopped
+    ports:
+    - 8080:8080
+    links:
+    - fleet_redis:redis
+    - fleet_mysql:mysql
+    - fleet_mailhog:mailhog
+    env:
+      KOLIDE_MYSQL_ADDRESS: mysql:3306
+      KOLIDE_MYSQL_DATABASE: "{{ mysql_database }}"
+      KOLIDE_MYSQL_USERNAME: "{{ mysql_user }}"
+      KOLIDE_MYSQL_PASSWORD: "{{ mysql_password }}"
+      KOLIDE_REDIS_ADDRESS: redis:6379
+      KOLIDE_SERVER_CERT: /etc/kolide/server.cert
+      KOLIDE_SERVER_KEY: /etc/kolide/server.key
+      KOLIDE_AUTH_JWT_KEY: "{{ jwt_key }}"
     volumes:
     - /opt/fleet-docker:/etc/kolide/
   become: true
