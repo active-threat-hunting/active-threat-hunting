@@ -1,5 +1,5 @@
 ---
-- name: create graylog system user
+- name: create thehive docker system user
   user:
     name: thehive-docker
     comment: 'thehive docker system user'
