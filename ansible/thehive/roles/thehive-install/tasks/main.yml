@@ -1,0 +1,79 @@
+---
+- name: create graylog system user
+  user:
+    name: thehive-docker
+    comment: 'thehive docker system user'
+    system: true
+    uid: 2170
+  become: true
+- name: pull elasticsearch docker image
+  docker_image:
+    name: docker.elastic.co/elasticsearch/elasticsearch
+    tag: 5.6.0
+  become: true
+- name: pull thehive cortex docker image
+  docker_image:
+    name: thehiveproject/cortex
+    tag: latest
+  become: true
+- name: pull thehive docker image
+  docker_image:
+    name: thehiveproject/thehive
+    tag: latest
+  become: true
+- name: create elasticsearch_data directory
+  file:
+    path: /opt/thehive-docker/elasticsearch
+    state: directory
+    owner: 2170
+    mode: 0700
+  become: true
+- name: increase max memory for elasticsearch
+  shell: sysctl -w vm.max_map_count=262144
+  become: true
+- name: run elasticsearch docker container
+  docker_container:
+    name: thehive_elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.0
+    state: started
+    restart_policy: unless-stopped
+    network_mode: host
+    volumes:
+    - /opt/thehive-docker/elasticsearch:/usr/share/elasticsearch/data
+    env:
+      http.host: "0.0.0.0"
+      transport.host: "0.0.0.0"
+      xpack.security.enabled: "false"
+      cluster.name: "hive"
+      script.inline: "true"
+      thread_pool.index.queue_size: "100000"
+      thread_pool.search.queue_size: "100000"
+      thread_pool.bulk.queue_size: "100000"
+    ulimits:
+    - nofile:65536:65536
+    user: 2170
+  become: true
+- name: run thehive cortex docker container
+  docker_container:
+    name: thehive_cortex
+    image: thehiveproject/cortex:latest
+    state: started
+    restart_policy: unless-stopped
+    ports:
+    - "9001:9001"
+    user: 2170
+  become: true
+- name: run thehive docker container
+  docker_container:
+    name: thehive
+    image: thehiveproject/thehive:latest
+    state: started
+    command: --cortex-port 9001 --cortex-hostname cortex --es-hostname elasticsearch
+    restart_policy: unless-stopped
+    ports:
+    - "9000:9000"
+    links:
+    - thehive_elasticsearch:elasticsearch
+    - thehive_cortex:cortex
+    user: 2170
+  become: true
