@@ -61,7 +61,6 @@
     restart_policy: unless-stopped
     ports:
     - "9001:9001"
-    user: 2170
   become: true
 - name: run thehive docker container
   docker_container:
@@ -75,5 +74,4 @@
     links:
     - thehive_elasticsearch:elasticsearch
     - thehive_cortex:cortex
-    user: 2170
   become: true
