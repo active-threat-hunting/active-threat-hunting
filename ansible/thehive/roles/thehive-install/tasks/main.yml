@@ -25,7 +25,7 @@
   file:
     path: /opt/thehive-docker/elasticsearch
     state: directory
-    owner: 2170
+    owner: root
     mode: 0700
   become: true
 - name: increase max memory for elasticsearch
