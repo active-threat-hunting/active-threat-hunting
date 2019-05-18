@@ -112,6 +112,7 @@
     image: kolide/fleet:latest
     state: started
     restart_policy: unless-stopped
+    command: fleetctl prepare db 
     ports:
     - 8080:8080
     links:
