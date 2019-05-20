@@ -1,0 +1,18 @@
+---
+- name: configure auth logging and auth priv logging to remote server
+  lineinfile:
+    dest: /etc/rsyslog.d/60-logging.conf
+    line: "{{ item.line }}"
+    create: yes
+    insertafter: EOF
+  with_items:
+    - { line: "auth.info       @{{ rsyslog_server }}" }
+      #  - { line: "auth.info       @{{ rsyslog_server_2 }}" }
+    - { line: "authpriv.info   @{{ rsyslog_server }}" }
+      #   - { line: "authpriv.info   @{{ rsyslog_server_2 }}" }
+- name: restart rsyslog
+  systemd:
+    name: rsyslog
+    state: restarted
+    enabled: yes
+  ignore_errors: yes
