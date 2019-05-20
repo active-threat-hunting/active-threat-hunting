@@ -10,9 +10,11 @@
       #  - { line: "auth.info       @{{ rsyslog_server_2 }}" }
     - { line: "authpriv.info   @{{ rsyslog_server }}" }
       #   - { line: "authpriv.info   @{{ rsyslog_server_2 }}" }
+  become: true
 - name: restart rsyslog
   systemd:
     name: rsyslog
     state: restarted
     enabled: yes
   ignore_errors: yes
+  become: true
