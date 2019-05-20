@@ -21,12 +21,9 @@
     name: thehiveproject/thehive
     tag: latest
   become: true
-- name: create elasticsearch_data directory
-  file:
-    path: /opt/thehive-docker/elasticsearch
-    state: directory
-    owner: root
-    mode: 0700
+- name: create thehive_elasticsearch_data docker volume
+  docker_volume:
+    name: thehive_elasticsearch_data
   become: true
 - name: increase max memory for elasticsearch
   shell: sysctl -w vm.max_map_count=262144
@@ -38,7 +35,7 @@
     state: started
     restart_policy: unless-stopped
     volumes:
-    - /opt/thehive-docker/elasticsearch:/usr/share/elasticsearch/data
+    - thehive_elasticsearch_data:/usr/share/elasticsearch/data
     env:
       http.host: "0.0.0.0"
       transport.host: "0.0.0.0"
@@ -69,7 +66,7 @@
     command: --cortex-port 9001 --cortex-hostname cortex --es-hostname elasticsearch
     restart_policy: unless-stopped
     ports:
-    - "9000:9000"
+    - "10000:9000"
     links:
     - thehive_elasticsearch:elasticsearch
     - thehive_cortex:cortex
