@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: graylog
   roles:
   - {role: docker-setup}
   - {role: graylog-install}
