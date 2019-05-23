@@ -1,13 +1,5 @@
 ---
 - hosts: all
-  vars:
-    ansible_python_interpreter: "/usr/bin/env python3"
-    ubuntu_distribution: "bionic"
-    mysql_database: "kolide"
-    mysql_user: "kolide"
-    mysql_password: "kolide"
-    self_sign_ssl_options: "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=example.com"
-    jwt_key: "changeme"
   roles:
   - {role: docker-setup}
   - {role: fleet-install}
