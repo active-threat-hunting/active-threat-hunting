@@ -53,6 +53,8 @@
     name: thehive_cortex
     image: thehiveproject/cortex:latest
     state: started
+    links:
+    - thehive_elasticsearch:elasticsearch
     restart_policy: unless-stopped
     ports:
     - "9001:9001"
