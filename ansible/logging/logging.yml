@@ -1,4 +1,4 @@
 ---
-- hosts: logging
+- hosts: all
   roles:
   - {role: rsyslog}
