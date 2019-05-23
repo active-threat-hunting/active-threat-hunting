@@ -83,6 +83,7 @@
       GRAYLOG_PASSWORD_SECRET: "{{ graylog_password_secret }}"
       GRAYLOG_ROOT_USERNAME: "{{ graylog_root_username }}"
       GRAYLOG_ROOT_PASSWORD_SHA2: "{{ graylog_root_password_sha2 }}"
+      GRAYLOG_ROOT_TIMZONE: "{{ graylog_root_timezone }}"
       GRAYLOG_HTTP_EXTERNAL_URI: "{{ graylog_http_external_uri }}"
       GRAYLOG_HTTP_PUBLISH_URI: "{{ graylog_http_publish_uri }}"
       GRAYLOG_MONGODB_URI: "{{ graylog_mongodb_uri }}"
