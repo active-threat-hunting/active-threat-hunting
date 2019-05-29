@@ -1,0 +1,12 @@
+---
+- name: download launcher deb file
+  get_url:
+    url: "{{ launcher_deb_url }}"
+    dest: /tmp/launcher.deb
+  when: (ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian') and launcher_deb_url != "" 
+- name: install launcher deb
+  apt:
+    update_cache: yes
+    deb: /tmp/launcher.deb
+  become: true
+  when: (ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian') and launcher_deb_url != "" 
