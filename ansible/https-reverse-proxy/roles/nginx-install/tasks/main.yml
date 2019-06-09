@@ -6,19 +6,19 @@
     system: true
     uid: "{{ container_uid }}"
   become: true
-- name: "create {{ container_username }} redis directory"
+- name: "create {{ container_username }} directory"
   file:
     path: "/opt/{{ container_username }}"
     mode: 0700
     owner: "{{ container_uid }}"
-  state: directory
-  become: true
-- name: generate csr
-  shell: "openssl req -new -key /opt/{{ container_username }}/server.key -out /opt/{{ container_username }}/server.csr -subj {{ self_sign_ssl_options }}"
+    state: directory
   become: true
 - name: generate cert
-  shell: "openssl x509 -req -days 366 -in /opt/{{ container_username }}/server.csr -signkey /opt/{{ container_username }}/server.key -out /opt/{{ container_username }}/server.cert"
+  shell: "openssl req -x509 -newkey rsa:4096 -nodes -keyout /opt/{{ container_username }}/server.key -out /opt/nginx-docker/server.cert -days 365 -subj {{ self_sign_ssl_options }}"
   become: true
+  #- name: generate csr
+  #shell: "openssl req -new -key /opt/{{ container_username }}/server.key -out /opt/{{ container_username }}/server.csr -subj {{ self_sign_ssl_options }}"
+  #become: true
 - name: copy nginx config 
   copy:
     src: nginx.conf
@@ -38,7 +38,7 @@
   replace:
     path: "/opt/{{ container_username }}/nginx.conf"
     regexp: "proxy_pass   http://example-container"
-    replace: "proxy_pass   http://{{ linked_container_name }}:{{ linked_container_port }}"
+    replace: "proxy_pass   http://{{ origin_hostname }}:{{ linked_container_port }}"
   become: true
 - name: "add config changes to /opt/{{ container_username }}/nginx.conf"
   replace:
@@ -50,7 +50,7 @@
   replace:
     path: "/opt/{{ container_username }}/nginx.conf"
     regexp: "ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;"
-    replace: "ssl_certificate_key /opt/{{ container_username }}/server.key;"
+    replace: "ssl_certificate_key /tmp/server.key;"
   become: true
 - name: "add config changes to /opt/{{ container_username }}/nginx.conf"
   replace:
