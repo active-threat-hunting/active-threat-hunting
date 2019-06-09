@@ -1,0 +1,70 @@
+---
+- name: "create {{ container_username }} system user"
+  user:
+    name: "{{ container_username }}"
+    comment: 'nginx docker system user'
+    system: true
+    uid: "{{ container_uid }}"
+  become: true
+- name: "create {{ container_username }} redis directory"
+  file:
+    path: "/opt/{{ container_username }}"
+    mode: 0700
+    owner: "{{ container_uid }}"
+  state: directory
+  become: true
+- name: generate csr
+  shell: "openssl req -new -key /opt/{{ container_username }}/server.key -out /opt/{{ container_username }}/server.csr -subj {{ self_sign_ssl_options }}"
+  become: true
+- name: generate cert
+  shell: "openssl x509 -req -days 366 -in /opt/{{ container_username }}/server.csr -signkey /opt/{{ container_username }}/server.key -out /opt/{{ container_username }}/server.cert"
+  become: true
+- name: copy nginx config 
+  copy:
+    src: nginx.conf
+    dest: "/opt/{{ container_username }}/nginx.conf"
+    owner: "{{ container_uid }}"
+    mode: 0600
+    backup: yes
+    force: yes
+  become: true
+- name: "add config changes to /opt/{{ container_username }}/nginx.conf"
+  replace:
+    path: "/opt/{{ container_username }}/nginx.conf"
+    regexp: "server_name example.com"
+    replace: "server_name {{ nginx_server_name }}"
+  become: true
+- name: "add config changes to /opt/{{ container_username }}/nginx.conf"
+  replace:
+    path: "/opt/{{ container_username }}/nginx.conf"
+    regexp: "proxy_pass   http://example-container"
+    replace: "proxy_pass   http://{{ linked_container_name }}:{{ linked_container_port }}"
+  become: true
+- name: "add config changes to /opt/{{ container_username }}/nginx.conf"
+  replace:
+    path: "/opt/{{ container_username }}/nginx.conf"
+    regexp: "ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;"
+    replace: "ssl_certificate /tmp/server.cert;"
+  become: true
+- name: "add config changes to /opt/{{ container_username }}/nginx.conf"
+  replace:
+    path: "/opt/{{ container_username }}/nginx.conf"
+    regexp: "ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;"
+    replace: "ssl_certificate_key /opt/{{ container_username }}/server.key;"
+  become: true
+- name: "add config changes to /opt/{{ container_username }}/nginx.conf"
+  replace:
+    path: "/opt/{{ container_username }}/nginx.conf"
+    regexp: "listen 11111 ssl;"
+    replace: "listen {{ exposed_ssl_port }}  ssl;"
+  become: true
+- name: begin nginx docker container
+  docker_container:
+    name: "{{ container_username }}_nginx"
+    image: nginx
+    restart_policy: unless-stopped
+    volumes:
+    - "/opt/{{ container_username }}/nginx.conf:/etc/nginx/nginx.conf:ro"
+    - "/opt/{{ container_username }}/server.key:/tmp/server.key:ro"
+    - "/opt/{{ container_username }}/server.cert:/tmp/server.cert:ro"
+  become: true
