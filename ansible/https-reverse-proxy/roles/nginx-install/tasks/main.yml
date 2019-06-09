@@ -63,6 +63,8 @@
     name: "{{ container_username }}_nginx"
     image: nginx
     restart_policy: unless-stopped
+    ports:
+    - "{{ exposed_ssl_port }}:{{ exposed_ssl_port }}" 
     volumes:
     - "/opt/{{ container_username }}/nginx.conf:/etc/nginx/nginx.conf:ro"
     - "/opt/{{ container_username }}/server.key:/tmp/server.key:ro"
