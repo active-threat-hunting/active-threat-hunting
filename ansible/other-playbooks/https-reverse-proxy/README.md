@@ -1,6 +1,9 @@
 ### https-reverse-proxy ansible playbook
 
-### This playbook runs an nginx reverse proxy in Docker using a self-signed SSL certificate
+This playbook runs an nginx reverse proxy in Docker using a self-signed SSL certificate
+
+
+### Installation:
 
 1. Install the Ansible roles that are dependencies for the playbook to run:
 
@@ -23,5 +26,5 @@ Config changes of note:
 
 ### Additional information:
 
-The playbook creates a self-signed SSL cert and key in /opt in a directory using the same name as the value set for `container_username`. So if the `container_username` is `nginx-docker` the self-signed SSL cert and key would be in `/opt/nginx-docker`. You can replace the cert as needed with a valid certificate on the remote server and then re-run the playbook to re-initialize the Nginx docker container using the new SSL cert.
+The playbook creates a self-signed SSL cert and key in /opt in a directory using the same name as the value set for `container_name`. So if the `container_name` is `nginx-docker` the self-signed SSL cert and key would be in `/opt/nginx-docker`. You can replace the cert as needed with a valid certificate on the remote server and then re-run the playbook to re-initialize the Nginx docker container using the new SSL cert.
 
