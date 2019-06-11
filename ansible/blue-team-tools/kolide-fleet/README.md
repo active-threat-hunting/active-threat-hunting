@@ -1,6 +1,8 @@
 ### kolide-fleet ansible playbook
 
-### This playbook runs kolide-fleet in Docker using a self-signed SSL certificate
+This playbook runs kolide-fleet in Docker using a self-signed SSL certificate
+
+### Installation:
 
 1. Install the Ansible roles that are dependencies for the playbook to run:
 
@@ -13,6 +15,10 @@
 
 `ansible-playbook -i inventory fleet.yml`
 
+
+### Post-install:
+
+Access the web interface for Kolide Fleet on port 8080 of the remote server.
 
 ### Additional information:
 
