@@ -10,7 +10,7 @@
 
 3. Run the playbook:
 
-`ansible-playbook -i inventory graylog.yml
+`ansible-playbook -i inventory graylog.yml`
 
 
 After the install, it would be recommended to use firewall rules to restrict access to your Graylog instance. It would also be recommended to set up an SSL certificate for the application.
