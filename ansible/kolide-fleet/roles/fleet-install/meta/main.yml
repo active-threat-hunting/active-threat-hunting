@@ -1,3 +1,4 @@
 ---
 dependencies:
-  - { role: docker-setup }
+  - { role: geerlingguy.pip }
+  - { role: geerlingguy.docker }
