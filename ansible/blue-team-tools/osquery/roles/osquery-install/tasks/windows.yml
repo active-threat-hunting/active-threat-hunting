@@ -1,0 +1,26 @@
+---
+- name: copy osquery.msi file
+  win_copy:
+    src: osquery.msi
+    dest: "C:\Windows\Temp\osquery.msi"
+- name: install osquery.msi
+  win_package:
+    path: "C:\Windows\Temp\osquery.msi"
+    state: present
+- name: copy osquery.flags file
+  win_copy:
+    src: windows-osquery.flags
+    dest: "{{ windows_osquery_dir }}\osquery.flags"
+- name: copy osquery.key file
+  win_copy:
+    src: osquery.key
+    dest: "{{ windows_osquery_dir }}\osquery.key"
+- name: delete pre-existing osqueryd service
+  win_service:
+    name: osqueryd
+    state: absent
+- name: install osqueryd service
+  win_service:
+    name: osquerydaemon
+    state: started
+    path: 'C:\ProgramData\osquery\osqueryd\osqueryd.exe --flagfile=C:\ProgramData\osquery\osquery.flags'

@@ -1,0 +1,9 @@
+---
+- include_tasks: windows.yml 
+  when: ansible_facts['os_family'] == 'Windows'
+- include_tasks: debian.yml
+  when: ansible_facts['os_family'] == 'Debian'
+- include_tasks: redhat.yml
+  when: ansible_facts['os_family'] == 'RedHat'
+- include_tasks: darwin.yml
+  when: ansible_facts['os_family'] == 'Darwin'
