@@ -9,6 +9,12 @@
 
 2. Edit the variables in `inventory` to reflect the values appropriate for your install.
 
+For `graylog_password_secret` run the following command to generate a secure pepper for your passwords: `pwgen -s 96 1`
+
+For `graylog_root_password_sha2` run the following command to get the SHA256 Sum of your desired Graylog password: `echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1`
+
+
+
 
 3. Run the playbook:
 
