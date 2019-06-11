@@ -1,6 +1,8 @@
 ---
 - hosts: all
+  become: True
   roles:
-  - {role: docker-setup}
-  - {role: graylog-install}
-  - {role: firewall-config}
+    - role: "elastic.elasticsearch"
+    - role: "Graylog2.graylog-ansible-role"
+      tags:
+        - "graylog"

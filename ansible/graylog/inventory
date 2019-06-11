@@ -6,24 +6,18 @@ graylog:
     ansible_ssh_user: ansible
     ansible_ssh_private_key_file: /Users/ansible/.ssh/id_rsa
     ansible_python_interpreter: "/usr/bin/env python3"
-    ##
-    ubuntu_distribution: "bionic"
-    ##
-    es_docker_tag: "6.6.2"
-    graylog_docker_tag: "3.0"
-    ##
-    es_java_opts: "-Xms512m -Xmx512m"
-    ##
-    ## change to random string i.e. `pwgen -1 -s 96`
-    graylog_password_secret: "yOvevwuqOF5kA8w4iUnJDMxcSIAm0FXP6Qne5feZZQ1JZdmzXrbvtqOTaIEDGzNcX3uXgMQU19LVduCzpuvE96B9ObVs7Nu1"
-    graylog_root_username: "admin"
-    #echo -n yourpassword | shasum -a 256
+    es_enable_xpack: False
+    es_instance_name: "graylog"
+    es_heap_size: "1g"
+    es_config:
+      node.name: "graylog"
+      cluster.name: "graylog"
+      http.port: 9200
+      transport.tcp.port: 9300
+      network.host: "127.0.0.1"
+    graylog_install_java: False # Elasticsearch role already installed Java
+    graylog_password_secret: "ciB6mThsUZg6qAkoGzMUixZrAw9tBukNbiOSiVx68J4E4Fcuce7QP2JtB8uf9erNMLAZ6KtF3QskhJnnJngvoRSHduGLAewF" # generate with: pwgen -s 96 1
     graylog_root_password_sha2: "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
-    ##
-    ## graylog configuration variables
-    graylog_http_external_uri: "http://192.168.1.5:9000/"
-    graylog_http_publish_uri: "http://192.168.1.5:9000/"
-    graylog_root_timezone: "America/Denver"
-    graylog_mongodb_uri: "mongodb://localhost/graylog"
-    graylog_elasticsearch_hosts: "http://localhost:9200"
-    iptables_ssh_port: 22
+    graylog_http_bind_address: "{{ ansible_default_ipv4.address }}:9000"
+    graylog_http_publish_uri: "http://{{ ansible_default_ipv4.address }}:9000/"
+    graylog_http_external_uri: "http://{{ ansible_default_ipv4.address }}:9000/"

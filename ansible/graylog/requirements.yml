@@ -1,0 +1,7 @@
+---
+- src: elastic.elasticsearch
+  version: 6.6.0
+
+- src: graylog2.graylog-ansible-role
+
+- src: jdauphant.nginx 

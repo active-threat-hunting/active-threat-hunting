@@ -1,0 +1,4 @@
+*.swp
+
+### Ansible
+roles/
