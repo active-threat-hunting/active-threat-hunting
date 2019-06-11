@@ -6,13 +6,7 @@ nginx:
     ansible_ssh_user: ansible
     ansible_ssh_private_key_file: /Users/ansible/.ssh/id_rsa
     ansible_python_interpreter: "/usr/bin/env python3"
-    ubuntu_distribution: "bionic"
     self_sign_ssl_options: "'/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=192.168.1.5'"
-    ssl_port: "443"
-    http_redirect: "false"
-    container_username: "nginx-docker"
+    ssl_port: "9090"
+    container_name: "nginx-docker"
     container_uid: "2100"
-    nginx_server_name: "192.168.1.5"
-    origin_hostname: "127.0.0.1"
-    linked_container_port: "9000"
-    exposed_ssl_port: "443"
