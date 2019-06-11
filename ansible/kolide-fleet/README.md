@@ -11,7 +11,7 @@
 
 3. Run the playbook:
 
-`ansible-playbook -i inventory proxy.yml`
+`ansible-playbook -i inventory fleet.yml`
 
 
 ### Additional information:
