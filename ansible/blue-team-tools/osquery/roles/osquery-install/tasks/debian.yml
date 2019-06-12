@@ -3,22 +3,26 @@
   copy:
     src: osquery.deb
     dest: /tmp/osquery.deb
+  become: true
 - name: install osquery.deb
   apt:
     deb: /tmp/osquery.deb
     state: present
+  become: true
 - name: copy osquery.flags file
   copy:
     src: osquery.flags
     dest: "{{ unix_osquery_dir }}/osquery.flags"
     owner: root
     mode: 0600
+  become: true
 - name: copy osquery.key file
   copy:
     src: osquery.key
     dest: "{{ unix_osquery_dir }}/osquery.key"
     owner: root
     mode: 0600
+  become: true
 - name: overwrite pre-existing osqueryd service
   copy:
     src: osqueryd.service
@@ -26,8 +30,10 @@
     force: true
     owner: root
     mode: 0600
+  become: true
 - name: enable and start osqueryd.service
   systemd:
     name: osqueryd
     state: started
     enabled: true
+  become: true
