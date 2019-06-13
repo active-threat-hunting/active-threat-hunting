@@ -1,0 +1,8 @@
+---
+- name: include windows vars
+  include_vars:
+    file: windows.yml
+- name: install pscx module
+  win_psmodule:
+    name: Pscx
+    state: present
