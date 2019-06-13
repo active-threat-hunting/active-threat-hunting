@@ -30,12 +30,12 @@
 - name: edit /etc/systemd/system/launcher.service to use correct fleet URI
   replace:
     path: /etc/systemd/system/launcher.service
-    regexp: '--hostname=$FleetServer:FleetPort'
+    regexp: '--hostname=\$FleetServer:FleetPort'
     replace: "--hostname={{ osquery_uri }}"
 - name: edit /etc/systemd/system/launcher.service to use correct enroll secret 
   replace:
     path: /etc/systemd/system/launcher.service
-    regexp: '--enroll_secret=$FleetSecret'
+    regexp: '--enroll_secret=\$FleetSecret'
     replace: "--enroll_secret={{ osquery_enroll_secret }}"
 - name: if self-signed SSL being used, then have launcher use --insecure flag
   replace:
@@ -47,4 +47,5 @@
   systemd:
     name: launcher.service
     enabled: true
+    daemon_reload: true
     state: started
