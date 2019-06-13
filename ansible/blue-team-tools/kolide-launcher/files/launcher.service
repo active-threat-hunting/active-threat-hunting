@@ -1,0 +1,15 @@
+[Unit]
+Description=The Kolide Launcher
+After=network.service syslog.service
+
+[Service]
+ExecStart= /usr/bin/launcher \
+  --hostname=$FleetServer:FleetPort \
+  --enroll_secret=$FleetSecret \
+  --autoupdate \
+  --osqueryd_path=/usr/bin/osqueryd #--insecure
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

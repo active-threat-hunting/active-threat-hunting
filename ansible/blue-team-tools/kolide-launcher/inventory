@@ -6,5 +6,6 @@ fleet:
     ansible_ssh_user: ansible
     ansible_ssh_private_key_file: /Users/ansible/.ssh/id_rsa
     ansible_python_interpreter: "/usr/bin/env python3"
-    ubuntu_distribution: "bionic"
-    launcher_deb_url: ""
+    self_signed_ssl: "true" 
+    osquery_enroll_secret: myosquerysecret
+    osquery_uri: "example.com:8080"
