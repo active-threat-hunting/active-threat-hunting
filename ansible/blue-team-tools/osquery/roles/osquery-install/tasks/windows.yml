@@ -1,4 +1,7 @@
 ---
+- name: include windows.vars
+  include_vars:
+    file: windows.vars
 - name: copy osquery.msi file
   win_copy:
     src: osquery.msi
