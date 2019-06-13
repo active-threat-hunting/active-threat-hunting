@@ -5,8 +5,6 @@ osquery:
   vars:
     ansible_user: ansible
     ansible_password: mypassword
-    unix_osquery_dir: "/etc/osquery"
-    windows_osquery_dir: 'C:\ProgramData\osquery\'
     ansible_port: 5986
     ansible_connection: winrm
     # The following is necessary for Python 2.7.9+ when using default WinRM self-signed certificates:

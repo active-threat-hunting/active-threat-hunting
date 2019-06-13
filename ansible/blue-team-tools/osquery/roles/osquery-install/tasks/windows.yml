@@ -1,7 +1,7 @@
 ---
-- name: include windows.vars
+- name: include windows vars
   include_vars:
-    file: windows.vars
+    file: windows.yml
 - name: copy osquery.msi file
   win_copy:
     src: osquery.msi
@@ -13,11 +13,11 @@
 - name: copy osquery.flags file
   win_copy:
     src: windows-osquery.flags
-    dest: "{{ windows_osquery_dir }}\\osquery.flags"
+    dest: C:\ProgramData\osquery\osquery.flags
 - name: copy osquery.key file
   win_copy:
     src: osquery.key
-    dest: "{{ windows_osquery_dir }}\\osquery.key"
+    dest: C:\ProgramData\osquery\osquery.key
 - name: delete pre-existing osqueryd service
   win_service:
     name: osqueryd
@@ -26,5 +26,4 @@
   win_service:
     name: osquerydaemon
     state: started
-    path: "{{ windows_osquery_dir }}\\osqueryd.exe --flagfile={{ windows_osquery_dir}}\\osquery.flags"
-  
+    path: C:\ProgramData\osquery\osqueryd.exe --flagfile=C:\ProgramData\osquery\osquery.flags
