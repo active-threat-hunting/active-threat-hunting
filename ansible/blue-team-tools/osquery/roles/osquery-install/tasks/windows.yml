@@ -18,12 +18,7 @@
   win_copy:
     src: osquery.key
     dest: C:\ProgramData\osquery\osquery.key
-- name: delete pre-existing osqueryd service
+- name: restart osqueryd service
   win_service:
     name: osqueryd
-    state: absent
-- name: install osqueryd service
-  win_service:
-    name: osquerydaemon
-    state: started
-    path: C:\ProgramData\osquery\osqueryd.exe --flagfile=C:\ProgramData\osquery\osquery.flags
+    state: restarted
