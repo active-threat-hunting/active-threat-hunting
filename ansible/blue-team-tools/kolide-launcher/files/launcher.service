@@ -3,6 +3,7 @@ Description=The Kolide Launcher
 After=network.service syslog.service
 
 [Service]
+User=root
 ExecStart= /usr/local/bin/launcher \
   --hostname=$FleetServer:FleetPort \
   --enroll_secret=$FleetSecret \
