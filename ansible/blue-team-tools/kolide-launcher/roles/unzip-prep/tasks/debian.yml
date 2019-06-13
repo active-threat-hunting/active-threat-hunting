@@ -3,10 +3,10 @@
   include_vars:
     file: linux.yml
 - name: install unzip package
-  become: yes
   apt:
     name: unzip
     update_cache: yes
     state: present
   tags:
   - unzip
+  become: true

@@ -3,9 +3,9 @@
   include_vars:
     file: linux.yml
 - name: install unzip package
-  become: yes
   yum:
     name: unzip
     state: present
   tags:
   - unzip
+  become: true
