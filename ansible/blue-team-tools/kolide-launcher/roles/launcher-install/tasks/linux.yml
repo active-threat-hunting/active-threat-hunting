@@ -10,42 +10,41 @@
   copy:
     remote_src: true
     src: /tmp/linux/launcher
-    dest: /usr/bin/launcher 
+    dest: /usr/local/bin/launcher 
 - name: cp linux launcher files to respective locations
   copy:
     remote_src: true
     src: /tmp/linux/osqueryd
-    dest: /usr/bin/osqueryd
-  become: true
+    dest: /usr/local/bin/osqueryd
 - name: cp linux launcher files to respective locations
   copy:
     remote_src: true
     src: /tmp/linux/osquery-extension.ext
-    dest: /usr/bin/osquery-extension.ext
-  become: true
+    dest: /usr/local/bin/osquery-extension.ext
 - name: copy launcher.service to /etc/systemd/system/launcher.service
   copy:
     src: launcher.service
     dest: /etc/systemd/system/launcher.service
     owner: root
     mode: 0600
-  become: true
 - name: edit /etc/systemd/system/launcher.service to use correct fleet URI
   replace:
     path: /etc/systemd/system/launcher.service
     regexp: '--hostname=$FleetServer:FleetPort'
     replace: "--hostname={{ osquery_uri }}"
-  become: true
 - name: edit /etc/systemd/system/launcher.service to use correct enroll secret 
   replace:
     path: /etc/systemd/system/launcher.service
     regexp: '--enroll_secret=$FleetSecret'
     replace: "--enroll_secret={{ osquery_enroll_secret }}"
-  become: true
 - name: if self-signed SSL being used, then have launcher use --insecure flag
   replace:
     path: /etc/systemd/system/launcher.service
-    regexp: '--osqueryd_path=/usr/bin/osqueryd #--insecure'
-    replace: '--osqueryd_path=/usr/bin/osqueryd --insecure'
-  become: true
+    regexp: '--osqueryd_path=/usr/local/bin/osqueryd #--insecure'
+    replace: '--osqueryd_path=/usr/local/bin/osqueryd --insecure'
   when: self_signed_ssl == "true"
+- name: start and enable launcher.service
+  systemd:
+    name: launcher.service
+    enable: true
+    status: started
