@@ -47,4 +47,4 @@
   systemd:
     name: launcher.service
     enabled: true
-    status: started
+    state: started
