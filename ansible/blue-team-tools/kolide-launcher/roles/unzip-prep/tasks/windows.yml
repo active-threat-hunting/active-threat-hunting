@@ -6,3 +6,4 @@
   win_psmodule:
     name: Pscx
     state: present
+  ignore_errors: true
