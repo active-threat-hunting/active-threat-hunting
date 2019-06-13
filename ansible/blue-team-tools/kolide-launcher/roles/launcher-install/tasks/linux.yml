@@ -10,17 +10,20 @@
   copy:
     remote_src: true
     src: /tmp/linux/launcher
-    dest: /usr/local/bin/launcher 
+    dest: /usr/local/bin/launcher
+    mode: 0755 
 - name: cp linux launcher files to respective locations
   copy:
     remote_src: true
     src: /tmp/linux/osqueryd
     dest: /usr/local/bin/osqueryd
+    mode: 0755 
 - name: cp linux launcher files to respective locations
   copy:
     remote_src: true
     src: /tmp/linux/osquery-extension.ext
     dest: /usr/local/bin/osquery-extension.ext
+    mode: 0755 
 - name: copy launcher.service to /etc/systemd/system/launcher.service
   copy:
     src: launcher.service
