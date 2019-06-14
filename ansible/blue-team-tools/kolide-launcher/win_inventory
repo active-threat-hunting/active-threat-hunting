@@ -9,7 +9,7 @@ fleet:
     ansible_connection: winrm
     # The following is necessary for Python 2.7.9+ when using default WinRM self-signed certificates:
     ansible_winrm_server_cert_validation: ignore
-    admin_user: Administrator
     self_signed_ssl: "true"
-    osquery_enroll_secret: myosquerysecret
-    osquery_uri: "example.com:8080"
+    osquery_enroll_secret: VugEqoDtF5aQ7crsIXz/n6TK1QWPnHgR
+    osquery_uri: "myhostname:8080"
+    admin_user: "ansible"

@@ -44,4 +44,4 @@
     when: self_signed_ssl != "true"
   become: true
   become_method: runas
-  become_user: Administrator
+  become_user: "{{ admin_user }}"
