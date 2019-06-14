@@ -42,6 +42,11 @@
       start_mode: auto
       state: started
     when: self_signed_ssl != "true"
+  - name: start launcher service if not started
+    win_service:
+      name: launcher
+      start_mode: auto
+      state: started
   become: true
   become_method: runas
   become_user: "{{ admin_user }}"
