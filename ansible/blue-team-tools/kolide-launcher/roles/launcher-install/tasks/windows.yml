@@ -31,14 +31,14 @@
   - name: create windows launcher service
     win_service:
       name: launcher
-      path: C:\ProgramData\launcher\osqueryd.exe --hostname="\{{ osquery_uri }}\" --enroll_secret="\{{ osquery_enroll_secret }}\" --autoupdate --osqueryd_path=C:\ProgramData\launcher\osqueryd.exe --insecure
+      path: C:\ProgramData\launcher\launcher.exe --hostname="{{ osquery_uri }}" --enroll_secret="{{ osquery_enroll_secret }}" --autoupdate --osqueryd_path=C:\ProgramData\launcher\osqueryd.exe --insecure
       start_mode: auto
       state: started
     when: self_signed_ssl == "true"
   - name: create windows launcher service
     win_service:
       name: launcher
-      path: C:\ProgramData\launcher\osqueryd.exe --hostname="\{{ osquery_uri }}\" --enroll_secret="\{{ osquery_enroll_secret }}\" --autoupdate --osqueryd_path=C:\ProgramData\launcher\osqueryd.exe
+      path: C:\ProgramData\launcher\launcher.exe --hostname="{{ osquery_uri }}" --enroll_secret="{{ osquery_enroll_secret }}" --autoupdate --osqueryd_path=C:\ProgramData\launcher\osqueryd.exe
       start_mode: auto
       state: started
     when: self_signed_ssl != "true"
