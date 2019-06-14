@@ -45,7 +45,7 @@
   - name: start launcher service if not started
     win_service:
       name: launcher
-      state: restarted
+      state: started
   become: true
   become_method: runas
   become_user: "{{ admin_user }}"
