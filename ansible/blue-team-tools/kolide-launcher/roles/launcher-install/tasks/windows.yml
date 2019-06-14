@@ -1,53 +1,47 @@
 ---
-- name: include windows vars
-  include_vars:
-    file: windows.yml
-- name: copy launcher.zip to C:\Windows\Temp
-  win_copy:
-    src: launcher.zip
-    dest: C:\Windows\Temp\launcher.zip
+- name: install launcher on windows
+  block: 
+  - name: copy launcher.zip to C:\Windows\Temp
+    win_copy:
+      src: launcher.zip
+      dest: C:\Windows\Temp\launcher.zip
+  - name: unzip launcher.zip
+    win_unzip:
+      src: C:\Windows\Temp\launcher.zip
+      dest: C:\Windows\Temp\
+  - name: create directory for launcher
+    win_file:
+      path: C:\ProgramData\launcher\
+      state: directory
+  - name: cp windows launcher files to respective locations
+    win_copy:
+      remote_src: true
+      src: C:\Windows\Temp\windows\launcher.exe
+      dest: C:\ProgramData\launcher\launcher.exe
+  - name: cp windows launcher files to respective locations
+    win_copy:
+      remote_src: true
+      src: C:\Windows\Temp\windows\osqueryd.exe
+      dest: C:\ProgramData\launcher\osqueryd.exe
+  - name: cp windows launcher files to respective locations
+    win_copy:
+      remote_src: true
+      src: C:\Windows\Temp\windows\osquery-extension.exe
+      dest: C:\ProgramData\launcher\osquery-extension.exe
+  - name: create windows launcher service
+    win_service:
+      name: launcher
+      path: C:\ProgramData\launcher\osqueryd.exe --hostname="\{{ osquery_uri }}\" --enroll_secret="\{{ osquery_enroll_secret }}\" --autoupdate --osqueryd_path=C:\ProgramData\launcher\osqueryd.exe --insecure
+      start_mode: auto
+      state: started
+    when: self_signed_ssl == "true"
+  - name: create windows launcher service
+    win_service:
+      name: launcher
+      path: C:\ProgramData\launcher\osqueryd.exe --hostname="\{{ osquery_uri }}\" --enroll_secret="\{{ osquery_enroll_secret }}\" --autoupdate --osqueryd_path=C:\ProgramData\launcher\osqueryd.exe
+      start_mode: auto
+      state: started
+    when: self_signed_ssl != "true"
   become: true
-- name: unzip launcher.zip
-  win_unzip:
-    src: C:\Windows\Temp\launcher.zip
-    dest: C:\Windows\Temp\
-  become: true
-- name: create directory for launcher
-  win_file:
-    path: C:\ProgramData\launcher\
-    state: directory
-  become: true
-- name: cp windows launcher files to respective locations
-  win_copy:
-    remote_src: true
-    src: C:\Windows\Temp\windows\launcher.exe
-    dest: C:\ProgramData\launcher\launcher.exe
-  become: true
-- name: cp windows launcher files to respective locations
-  win_copy:
-    remote_src: true
-    src: C:\Windows\Temp\windows\osqueryd.exe
-    dest: C:\ProgramData\launcher\osqueryd.exe
-  become: true
-- name: cp windows launcher files to respective locations
-  win_copy:
-    remote_src: true
-    src: C:\Windows\Temp\windows\osquery-extension.exe
-    dest: C:\ProgramData\launcher\osquery-extension.exe
-  become: true
-- name: create windows launcher service
-  win_service:
-    name: launcher
-    path: C:\ProgramData\launcher\osqueryd.exe --hostname="\{{ osquery_uri }}\" --enroll_secret="\{{ osquery_enroll_secret }}\" --autoupdate --osqueryd_path=C:\ProgramData\launcher\osqueryd.exe --insecure
-    start_mode: auto
-    state: started
-  become: true
-  when: self_signed_ssl == "true"
-- name: create windows launcher service
-  win_service:
-    name: launcher
-    path: C:\ProgramData\launcher\osqueryd.exe --hostname="\{{ osquery_uri }}\" --enroll_secret="\{{ osquery_enroll_secret }}\" --autoupdate --osqueryd_path=C:\ProgramData\launcher\osqueryd.exe
-    start_mode: auto
-    state: started
-  become: true
-  when: self_signed_ssl != "true"
+  become_method: runas
+  become_user: Administrator
