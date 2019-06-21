@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: true
+  vars:
+    pip_package: python3-pip
+    pip_executable: pip3
+    pip_install_packages:
+    - name: docker
+  roles:
+  - {role: geerlingguy.pip}
+  - {role: geerlingguy.docker}
+  - {role: wtanaka/make}
+  - {role: mozdef-install}

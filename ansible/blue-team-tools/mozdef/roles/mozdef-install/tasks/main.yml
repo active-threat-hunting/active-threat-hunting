@@ -1,0 +1,24 @@
+---
+- name: git clone MozDef repository to /opt/mozdef
+  git:
+    repo: 'https://github.com/mozilla/MozDef.git'
+    dest: /opt/mozdef
+  become: true
+- name: make build /opt/mozdef
+  make:
+    chdir: /opt/mozdef
+    target: build
+  become: true
+- name: copy mozdef.service to /etc/systemd/system/mozdef.service
+  copy:
+    src: mozdef.service
+    dest: /etc/systemd/system/mozdef.service
+    owner: root
+    mode: 0600
+  become: true
+- name: enable and start mozdef.service
+  systemd:
+    name: mozdef
+    enabled: true
+    state: started
+  become: true
