@@ -2,8 +2,8 @@
 Description=mozdef service
 
 [Service]
-WorkingDirectory=/opt/mozdef
-ExecStart=make run
+WorkingDirectory=/opt/mozdef/docker/compose
+ExecStart=docker-compose up
 
 [Install]
 WantedBy=multi-user.target
