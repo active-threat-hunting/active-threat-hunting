@@ -9,5 +9,5 @@
   roles:
   - {role: geerlingguy.pip}
   - {role: geerlingguy.docker}
-  - {role: wtanaka/make}
+  - {role: wtanaka.make}
   - {role: mozdef-install}
