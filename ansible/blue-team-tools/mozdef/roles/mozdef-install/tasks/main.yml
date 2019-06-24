@@ -10,8 +10,35 @@
     mode: 0700
     owner: root
   become: true
+- name: copy mozdef.env to /opt/mozdef/docker/compose/mozdef.env
+  copy:
+    src: mozdef.env
+    dest: /opt/mozdef/docker/compose/mozdef.env
+    force: true
+    backup: true
+    owner: root
+    mode: 0600
+  become: true
+- name: replace config in /opt/mozdef/docker/compose/mozdef.env
+  replace:
+    path: /opt/mozdef/docker/compose/mozdef.env
+    regexp: 'OPTIONS_METEOR_ROOTURL=http://github.com/heywoodlh/active-threat-hunting.git'
+    replace: "OPTIONS_METEOR_ROOTURL=http://{{ mozdef_uri }}"
+  become: true
+- name: replace config in /opt/mozdef/docker/compose/mozdef.env
+  replace:
+    path: /opt/mozdef/docker/compose/mozdef.env
+    regexp: 'OPTIONS_METEOR_PORT=http://github.com/heywoodlh/active-threat-hunting.git'
+    replace: "OPTIONS_METEOR_PORT={{ http_port }}"
+  become: true
+- name: replace config in /opt/mozdef/docker/compose/mozdef.env
+  replace:
+    path: /opt/mozdef/docker/compose/mozdef.env
+    regexp: 'OPTIONS_METEOR_KIBANAURL=http://github.com/heywoodlh/active-threat-hunting.git'
+    replace: "OPTIONS_METEOR_KIBANAURL=http://{{ mozdef_uri }}:9090/app/kibana"
+  become: true
 - name: docker-compose build /opt/mozdef/docker/compose
-  shell: "docker-compose build --build-arg OPTIONS_METEOR_PORT={{ http_port }} --build-arg OPTIONS_METEOR_KIBANAURL={{ mozdef_uri }}:9090/app/kibana --build-arg OPTIONS_METEOR_ROOTURL=http://{{ mozdef_uri }}"
+  shell: "docker-compose build --build-arg ENV_FILE=/opt/mozdef/docker/compose/mozdef.env"
   args:
     chdir: /opt/mozdef/docker/compose
   become: true
