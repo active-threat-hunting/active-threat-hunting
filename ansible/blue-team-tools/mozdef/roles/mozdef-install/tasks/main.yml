@@ -11,7 +11,7 @@
     owner: root
   become: true
 - name: docker-compose build /opt/mozdef/docker/compose
-  shell: "docker-compose build --build-arg OPTIONS_METEOR_PORT={{ http_port }} --build-arg OPTIONS_METEOR_KIBANAURL={{ mozdef_uri }}:9090/app/kibana OPTIONS_METEOR_ROOTURL=http://{{ mozdef_uri }}"
+  shell: "docker-compose build --build-arg OPTIONS_METEOR_PORT={{ http_port }} --build-arg OPTIONS_METEOR_KIBANAURL={{ mozdef_uri }}:9090/app/kibana --build-arg OPTIONS_METEOR_ROOTURL=http://{{ mozdef_uri }}"
   args:
     chdir: /opt/mozdef/docker/compose
   become: true
