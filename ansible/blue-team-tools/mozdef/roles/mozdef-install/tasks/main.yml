@@ -4,8 +4,14 @@
     repo: 'https://github.com/mozilla/MozDef.git'
     dest: /opt/mozdef
   become: true
+- name: more secure permissions of /opt/mozdef
+  file:
+    path: /opt/mozdef
+    mode: 0700
+    owner: root
+  become: true
 - name: docker-compose build /opt/mozdef/docker/compose
-  shell: docker-compose build
+  shell: "docker-compose build --build-arg OPTIONS_METEOR_PORT={{ http_port }} --build-arg OPTIONS_METEOR_KIBANAURL={{ mozdef_uri }}:9090/app/kibana OPTIONS_METEOR_ROOTURL=http://{{ mozdef_uri }}"
   args:
     chdir: /opt/mozdef/docker/compose
   become: true
