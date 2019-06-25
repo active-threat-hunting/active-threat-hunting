@@ -3,9 +3,9 @@
   tasks:
   - name: disable account creation in env file
     replace:
-      path: /opt/mozdef/docker/compose/mozdef.env
-      regexp: '#    - OPTIONS_METEOR_ENABLECLIENTACCOUNTCREATION=false'
-      replace: '    - OPTIONS_METEOR_ENABLECLIENTACCOUNTCREATION=false'
+      path: /opt/mozdef/meteor/imports/settings.js
+      regexp: 'enableClientAccountCreation: allowAccountCreation,'
+      replace: '// enableClientAccountCreation: allowAccountCreation,'
     become: true
   - name: docker-compose build /opt/mozdef/docker/compose
     shell: "docker-compose build --build-arg ENV_FILE=/opt/mozdef/docker/compose/mozdef.env"
