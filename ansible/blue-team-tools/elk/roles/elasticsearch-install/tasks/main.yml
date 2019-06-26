@@ -15,7 +15,6 @@
     image: "elasticsearch:{{ elk_version_tag }}"
     state: started
     restart_policy: unless-stopped
-    user: "{{ elk_system_user_uid }}"
     volumes:
     - elk_elasticsearch_data:/usr/share/elasticsearch/data
     env:
