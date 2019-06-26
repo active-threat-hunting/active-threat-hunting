@@ -1,0 +1,32 @@
+---
+- name: pull elasticsearch docker image
+  docker_image:
+    name: elasticsearch
+    source: pull
+    tag: "{{ elk_version_tag }}"
+  become: true
+- name: create elk_elasticsearch_data docker volume
+  docker_volume:
+    name: elk_elasticsearch_data
+  become: true
+- name: run elasticsearch docker container
+  docker_container:
+    name: elk_elasticsearch
+    image: "elasticsearch:{{ elk_version_tag }}"
+    state: started
+    restart_policy: unless-stopped
+    user: {{ elk_system_user_uid }}
+    volumes:
+    - elk_elasticsearch_data:/usr/share/elasticsearch/data
+    env:
+      http.host: "0.0.0.0"
+      transport.host: "0.0.0.0"
+      xpack.security.enabled: "false"
+      cluster.name: "elk"
+      script.inline: "true"
+      thread_pool.index.queue_size: "100000"
+      thread_pool.search.queue_size: "100000"
+      thread_pool.bulk.queue_size: "100000"
+    ulimits:
+    - nofile:65536:65536
+  become: true

@@ -1,0 +1,34 @@
+---
+- name: pull logstash docker image
+  docker_image:
+    name: logstash
+    source: pull
+    tag: "{{ elk_version_tag }}"
+  become: true
+- name: create /opt/elk-docker/logstash/conf
+  file:
+    path: /opt/elk-docker/logstash/conf/
+    mode: 0700
+    owner: {{ elk_system_user }}
+    state: directory
+  become: true
+- name: copy logstash config files to /opt/elk-docker/logstash/conf
+  copy:
+    src: logstash/
+    dest: /opt/elk-docker/logstash/conf
+    mode: 0700
+    owner: {{ elk_system_user_uid }}
+  become: true
+- name: run logstash docker container
+  docker_container:
+    name: elk_logstash
+    image: "logstash:{{ elk_version_tag }}"
+    user: {{ elk_system_user_uid }}
+    links:
+    - elk_elasticsearch:elasticsearch
+    ports:
+    - "{{ logstash_syslog_port }}:{{ logstash_syslog_port }}"
+    - "{{ logstash_beats_port }}:{{ logstash_beats_port }}"
+    volumes:
+    - /opt/elk-docker/logstash/conf:/usr/share/logstash/config
+  become: true

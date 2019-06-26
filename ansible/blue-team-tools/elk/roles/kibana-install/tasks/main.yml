@@ -1,0 +1,20 @@
+---
+- name: pull kibana docker image
+  docker_image:
+    name: kibana
+    source: pull
+    tag: "{{ elk_version_tag }}"
+  become: true
+- name: run kibana docker container
+  docker_container:
+    name: elk_kibana
+    image: "kibana:{{ elk_version_tag }}"
+    user: {{ elk_system_user_uid }}
+    links:
+    - elk_elasticsearch:elasticsearch
+    ports:
+    - {{ kibana_http_port }}:5601
+    env:
+      SERVER_NAME: "{{ elk_uri }}"
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+  become: true
