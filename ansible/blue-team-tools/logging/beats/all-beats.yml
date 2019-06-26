@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: true
+  roles:
+  - { role: geerlingguy.pip }
+  - { role: geerlingguy.docker }
+  - { role: filebeat-install }
+  - { role: auditbeat-install }
+  - { role: packetbeat-install }
+  - { role: metricbeat-install }
