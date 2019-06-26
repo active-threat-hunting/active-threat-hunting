@@ -1,2 +1,4 @@
 ---
 - src: robertdebock.rsyslog
+- src: geerlingguy.pip
+- src: geerlingguy.docker
