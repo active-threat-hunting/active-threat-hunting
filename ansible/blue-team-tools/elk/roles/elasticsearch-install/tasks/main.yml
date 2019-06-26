@@ -25,10 +25,7 @@
       transport.host: "0.0.0.0"
       xpack.security.enabled: "false"
       cluster.name: "elk"
-      script.inline: "true"
-      thread_pool.index.queue_size: "100000"
-      thread_pool.search.queue_size: "100000"
-      thread_pool.bulk.queue_size: "100000"
+      discovery.type: "single-node"
     ulimits:
     - nofile:65536:65536
   become: true
