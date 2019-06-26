@@ -9,7 +9,9 @@
   docker_container:
     name: elk_kibana
     image: "kibana:{{ elk_version_tag }}"
-    user: {{ elk_system_user_uid }}
+    state: started
+    restart_policy: unless-stopped 
+    user: "{{ elk_system_user_uid }}"
     links:
     - elk_elasticsearch:elasticsearch
     ports:

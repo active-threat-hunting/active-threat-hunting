@@ -4,5 +4,5 @@
     name: "{{ elk_system_user }}"
     comment: 'elk docker system user'
     system: true
-    uid: {{ elk_system_user_uid }}
+    uid: "{{ elk_system_user_uid }}"
   become: true

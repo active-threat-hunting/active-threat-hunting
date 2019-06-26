@@ -9,7 +9,7 @@
   file:
     path: /opt/elk-docker/logstash/conf/
     mode: 0700
-    owner: {{ elk_system_user }}
+    owner: "{{ elk_system_user }}"
     state: directory
   become: true
 - name: copy logstash config files to /opt/elk-docker/logstash/conf
@@ -17,13 +17,13 @@
     src: logstash/
     dest: /opt/elk-docker/logstash/conf
     mode: 0700
-    owner: {{ elk_system_user_uid }}
+    owner: "{{ elk_system_user_uid }}"
   become: true
 - name: run logstash docker container
   docker_container:
     name: elk_logstash
     image: "logstash:{{ elk_version_tag }}"
-    user: {{ elk_system_user_uid }}
+    user: "{{ elk_system_user_uid }}"
     links:
     - elk_elasticsearch:elasticsearch
     ports:
