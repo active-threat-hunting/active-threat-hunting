@@ -9,6 +9,9 @@
   docker_volume:
     name: elk_elasticsearch_data
   become: true
+- name: increase max memory for elasticsearch
+  shell: sysctl -w vm.max_map_count=262144
+  become: true
 - name: run elasticsearch docker container
   docker_container:
     name: elk_elasticsearch
