@@ -15,7 +15,7 @@
     links:
     - elk_elasticsearch:elasticsearch
     ports:
-    - {{ kibana_http_port }}:5601
+    - "{{ kibana_http_port }}:5601"
     env:
       SERVER_NAME: "{{ elk_uri }}"
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
