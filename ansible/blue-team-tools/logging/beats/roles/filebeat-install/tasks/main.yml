@@ -29,8 +29,9 @@
     image: "docker.elastic.co/beats/filebeat:{{ beats_version_tag }}"
     state: started
     restart_policy: unless-stopped
+    user: root
     volumes:
-    - /var/log:/var/log:ro
+    - /var/log:/var/log
     - /opt/filebeat-docker/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
     env:
       strict.perms: "false"
