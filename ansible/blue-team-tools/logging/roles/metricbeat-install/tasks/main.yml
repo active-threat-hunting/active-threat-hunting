@@ -1,0 +1,41 @@
+---
+- name: "pull docker.elastic.co/beats/metricbeat:{{ beats_version_tag }}"
+  docker_image:
+    name: "docker.elastic.co/beats/metricbeat:{{ beats_version_tag }}"
+    source: pull
+  become: true
+- name: create /opt/metricbeat-docker/
+  file:
+    path: /opt/metricbeat-docker/
+    state: directory
+    mode: 0755
+  become: true
+- name: copy metricbeat.yml to /opt/metricbeat-docker/metricbeat.yml
+  copy:
+    src: metricbeat.yml
+    dest: /opt/metricbeat-docker/metricbeat.yml
+    mode: 0644
+  become: true
+- name: replace logstash host config in /opt/metricbeat-docker/metricbeat.yml
+  replace:
+    path: /opt/metricbeat-docker/metricbeat.yml
+    regexp: 'hosts: \["mylogstash_host:5044"\]'
+    replace: 'hosts: ["{{ beats_server }}"]'
+    backup: true
+  become: true
+- name: run metricbeat docker container
+  docker_container:
+    name: metricbeat
+    image: "docker.elastic.co/beats/metricbeat:{{ beats_version_tag }}"
+    state: started
+    restart_policy: unless-stopped
+    user: root
+    volumes:
+    - /opt/metricbeat-docker/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+    - /proc:/hostfs/proc:ro
+    - /:/hostfs:ro
+    env:
+      strict.perms: "false"
+  become: true

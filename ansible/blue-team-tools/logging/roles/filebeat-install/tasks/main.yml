@@ -8,19 +8,19 @@
   file:
     path: /opt/filebeat-docker/
     state: directory
-    mode: 0700
+    mode: 0755
   become: true
 - name: copy filebeat.yml to /opt/filebeat-docker/filebeat.yml
   copy:
     src: filebeat.yml
     dest: /opt/filebeat-docker/filebeat.yml
-    mode: 0600
+    mode: 0644
   become: true
 - name: replace logstash host config in /opt/filebeat-docker/filebeat.yml
   replace:
     path: /opt/filebeat-docker/filebeat.yml
-    regexp: 'hosts: ["mylogstash_host:5044"]'
-    replace: "hosts: [\"{{ beats_server }}\"]"
+    regexp: 'hosts: \["mylogstash_host:5044"\]'
+    replace: 'hosts: ["{{ beats_server }}"]'
     backup: true
   become: true
 - name: run filebeat docker container
@@ -32,4 +32,6 @@
     volumes:
     - /var/log:/var/log:ro
     - /opt/filebeat-docker/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+    env:
+      strict.perms: "false"
   become: true
