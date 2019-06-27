@@ -33,4 +33,4 @@ After the install, it would be recommended to use firewall rules to restrict acc
 5044 -- Logstash beats input
 9995 -- Logstash netflow port
 
-It is highly recommended to restrict Elasticsearch to only be accessible from other Elasticsearch nodes and from localhost. Kibana should also be configured to use a password for logging in ((see here for an example)[https://www.hugeserver.com/kb/how-secure-kibana-nginx-centos/]) and HTTPS instead of HTTP.
+It is highly recommended to restrict Elasticsearch to only be accessible from other Elasticsearch nodes and from localhost. Kibana should also be configured to use a password for logging in -- (see here for an example)[https://www.hugeserver.com/kb/how-secure-kibana-nginx-centos/] -- and HTTPS instead of HTTP.
