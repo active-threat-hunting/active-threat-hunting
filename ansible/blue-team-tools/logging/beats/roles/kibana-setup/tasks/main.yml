@@ -1,0 +1,14 @@
+---
+- name: run metricbeat setup against kibana
+  command: "docker exec metricbeat metricbeat setup -e -E setup.kibana.host={{ kibana_server }}"
+  become: true
+- name: run packetbeat setup against kibana
+  command: "docker exec packetbeat packetbeat setup -e -E setup.kibana.host={{ kibana_server }}"
+  become: true
+- name: run auditbeat setup against kibana
+  command: "docker exec auditbeat auditbeat setup -e -E setup.kibana.host={{ kibana_server }}"
+  become: true
+- name: run filebeat setup against kibana
+  command: "docker exec filebeat filebeat setup -e -E setup.kibana.host={{ kibana_server }}"
+  become: true
+
