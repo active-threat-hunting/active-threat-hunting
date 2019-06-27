@@ -10,6 +10,7 @@ elk:
     elk_version_tag: "7.2.0"
     elk_system_user: "elk-docker"
     elk_system_user_uid: 3150
+    elasticsearch_port: 9200
     kibana_http_port: 5601
     logstash_syslog_port: 1514
     logstash_beats_port: 5044

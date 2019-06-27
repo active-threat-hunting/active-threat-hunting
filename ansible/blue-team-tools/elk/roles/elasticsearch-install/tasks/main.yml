@@ -18,6 +18,8 @@
     image: "elasticsearch:{{ elk_version_tag }}"
     state: started
     restart_policy: unless-stopped
+    ports:
+    - "{{ elasticsearch_port }}:{{ elasticsearch_port }}"
     volumes:
     - elk_elasticsearch_data:/usr/share/elasticsearch/data
     env:
