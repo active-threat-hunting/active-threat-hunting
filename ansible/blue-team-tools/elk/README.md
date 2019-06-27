@@ -24,4 +24,12 @@ This playbook installs each part of the Stack in Docker containers and links the
 
 Access the web interface for Kibana on the HTTP port of the remote server that was specified in the inventory file.
 
-After the install, it would be recommended to use firewall rules to restrict access to your ELK instance.
+After the install, it would be recommended to use firewall rules to restrict access to your ELK instance. The exposed ports are (if left default in the inventory file):
+
+9200 -- Elasticsearch
+5601 -- Kibana web interface
+1514 -- Logstash syslog input
+5044 -- Logstash beats input
+9995 -- Logstash netflow port
+
+It is highly recommended to restrict Elasticsearch to only be accessible from other Elasticsearch nodes and from localhost.
