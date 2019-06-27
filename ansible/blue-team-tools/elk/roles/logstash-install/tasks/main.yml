@@ -29,6 +29,7 @@
     ports:
     - "{{ logstash_syslog_port }}:{{ logstash_syslog_port }}"
     - "{{ logstash_beats_port }}:{{ logstash_beats_port }}"
+    - "{{ logstash_netflow_port }}:{{ logstash_netflow_port }}"
     volumes:
       - /opt/elk-docker/logstash/conf:/usr/share/logstash/pipeline
   become: true
