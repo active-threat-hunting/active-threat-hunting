@@ -19,7 +19,8 @@
     state: started
     restart_policy: unless-stopped
     ports:
-    - "{{ elasticsearch_port }}:{{ elasticsearch_port }}"
+    - "{{ elasticsearch_rest_port }}:9200"
+    - "{{ elasticsearch_com_port }}:9300"
     volumes:
     - elk_elasticsearch_data:/usr/share/elasticsearch/data
     env:
