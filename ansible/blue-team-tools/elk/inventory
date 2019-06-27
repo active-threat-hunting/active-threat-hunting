@@ -13,3 +13,4 @@ elk:
     kibana_http_port: 5601
     logstash_syslog_port: 1514
     logstash_beats_port: 5044
+    logstash_netflow_port: 9995
