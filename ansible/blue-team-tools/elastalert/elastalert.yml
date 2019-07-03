@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: true
+  vars:
+    pip_package: python-pip
+    pip_executable: pip
+    pip_install_packages:
+    - name: "{{ elastalert_pip_version }}"
+  roles:
+  - {role: geerlingguy.pip}
