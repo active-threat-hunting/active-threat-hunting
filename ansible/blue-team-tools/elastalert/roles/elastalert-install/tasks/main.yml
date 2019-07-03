@@ -1,0 +1,40 @@
+---
+- name: pull elastalert docker image
+  docker_image:
+    name: bitsensor/elastalert
+    source: pull
+    tag: "{{ elastalert_tag }}"
+  become: true
+- name: create /opt/elastalert/ directory
+  file:
+    path: /opt/elastalert/
+    state: directory
+    owner: root
+    mode: 0700
+  become: true
+- name: create /opt/elastalert/rules directory
+  file:
+    path: /opt/elastalert/rules
+    state: directory
+    owner: root
+    mode: 0700
+  become: true
+- name: copy elastalert files to /opt/elastalert
+  copy:
+    src: elastalert/
+    dest: /opt/elastalert
+  become: true
+- name: run elastalert docker container
+  docker_container:
+    name: elastalert
+    image: "bitsensor/elastalert:{{ elastalert_tag }}"
+    state: started
+    restart_policy: unless-stopped
+    network_mode: host
+    volumes:
+    - /opt/elastalert/config/elastalert.yaml:/opt/elastalert/config.yaml
+    - /opt/elastalert/config/elastalert-test.yaml:/opt/elastalert/config-test.yaml
+    - /opt/elastalert/config/config.json:/opt/elastalert-server/config/config.json
+    - /opt/elastalert/rules:/opt/elastalert/rules
+    - /opt/elastalert/rule_templates:/opt/elastalert/rule_templates
+  become: true
