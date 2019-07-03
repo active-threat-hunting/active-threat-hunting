@@ -1,0 +1,8 @@
+---
+redcloud:
+  hosts:
+    192.168.1.5:
+  vars:
+    ansible_ssh_user: ansible
+    ansible_ssh_private_key_file: /Users/ansible/.ssh/id_rsa
+    ansible_python_interpreter: "/usr/bin/env python3"

@@ -1,0 +1,16 @@
+---
+- name: git clone https://github.com/khast3x/Redcloud.git /opt/redcloud
+  git:
+    repo: https://github.com/khast3x/Redcloud.git
+    dest: /opt/redcloud
+  become: true
+- name: mkdir -p /opt/portainer/data
+  file:
+    path: /opt/portainer/data
+    state: directory
+  become: true
+- name: docker-compose build && docker-compose up in /opt/redcloud
+  docker_compose:
+    build: yes
+    project_src: /opt/redcloud/ 
+  become: true
