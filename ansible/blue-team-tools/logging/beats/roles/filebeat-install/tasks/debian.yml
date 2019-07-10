@@ -1,0 +1,30 @@
+---
+- name: copy filebeat.deb
+  copy:
+    src: filebeat.deb
+    dest: /tmp/filebeat.deb
+  become: true
+- name: install filebeat.deb
+  apt:
+    deb: /tmp/filebeat.deb
+  become: true
+- name: copy filebeat.yml to /etc/filebeat/filebeat.yml
+  copy:
+    src: filebeat.yml
+    dest: /etc/filebeat/filebeat.yml
+    backup: true
+    mode: 0600
+  become: true
+- name: replace logstash host config in /etc/filebeat/filebeat.yml
+  replace:
+    path: /etc/filebeat/filebeat.yml
+    regexp: 'hosts: \["mylogstash_host:5044"\]'
+    replace: 'hosts: ["{{ beats_server }}"]'
+    backup: true
+  become: true
+- name: start and enable filebeat service
+  systemd:
+    name: filebeat
+    state: started
+    enabled: true
+  become: true

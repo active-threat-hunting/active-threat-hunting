@@ -1,0 +1,30 @@
+---
+- name: copy packetbeat.deb
+  copy:
+    src: packetbeat.deb
+    dest: /tmp/packetbeat.deb
+  become: true
+- name: install packetbeat.deb
+  apt:
+    deb: /tmp/packetbeat.deb
+  become: true
+- name: copy packetbeat.yml to /etc/packetbeat/packetbeat.yml
+  copy:
+    src: packetbeat.yml
+    dest: /etc/packetbeat/packetbeat.yml
+    backup: true
+    mode: 0600
+  become: true
+- name: replace logstash host config in /etc/packetbeat/packetbeat.yml
+  replace:
+    path: /etc/packetbeat/packetbeat.yml
+    regexp: 'hosts: \["mylogstash_host:5044"\]'
+    replace: 'hosts: ["{{ beats_server }}"]'
+    backup: true
+  become: true
+- name: start and enable packetbeat service
+  systemd:
+    name: packetbeat
+    state: started
+    enabled: true
+  become: true

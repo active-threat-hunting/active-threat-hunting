@@ -1,41 +1,7 @@
 ---
-- name: "pull docker.elastic.co/beats/packetbeat:{{ beats_version_tag }}"
-  docker_image:
-    name: "docker.elastic.co/beats/packetbeat:{{ beats_version_tag }}"
-    source: pull
-  become: true
-- name: create /opt/packetbeat-docker/
-  file:
-    path: /opt/packetbeat-docker/
-    state: directory
-    mode: 0755
-  become: true
-- name: copy packetbeat.yml to /opt/packetbeat-docker/packetbeat.yml
-  copy:
-    src: packetbeat.yml
-    dest: /opt/packetbeat-docker/packetbeat.yml
-    mode: 0644
-  become: true
-- name: replace logstash host config in /opt/packetbeat-docker/packetbeat.yml
-  replace:
-    path: /opt/packetbeat-docker/packetbeat.yml
-    regexp: 'hosts: \["mylogstash_host:5044"\]'
-    replace: 'hosts: ["{{ beats_server }}"]'
-    backup: true
-  become: true
-- name: run packetbeat docker container
-  docker_container:
-    name: packetbeat
-    image: "docker.elastic.co/beats/packetbeat:{{ beats_version_tag }}"
-    state: started
-    restart_policy: unless-stopped
-    user: root
-    volumes:
-    - /opt/packetbeat-docker/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml:ro
-    capabilities:
-    - NET_RAW
-    - NET_ADMIN
-    network_mode: host
-    env:
-      strict.perms: "false"
-  become: true
+- name: include debian.yml
+  include_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
+- name: include docker.yml
+  include_tasks: docker.yml
+  when: ansible_os_family != 'Debian'

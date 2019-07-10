@@ -1,0 +1,38 @@
+---
+- name: "pull docker.elastic.co/beats/filebeat:{{ beats_version_tag }}"
+  docker_image:
+    name: "docker.elastic.co/beats/filebeat:{{ beats_version_tag }}"
+    source: pull
+  become: true
+- name: create /opt/filebeat-docker/
+  file:
+    path: /opt/filebeat-docker/
+    state: directory
+    mode: 0755
+  become: true
+- name: copy filebeat.yml to /opt/filebeat-docker/filebeat.yml
+  copy:
+    src: filebeat.yml
+    dest: /opt/filebeat-docker/filebeat.yml
+    mode: 0644
+  become: true
+- name: replace logstash host config in /opt/filebeat-docker/filebeat.yml
+  replace:
+    path: /opt/filebeat-docker/filebeat.yml
+    regexp: 'hosts: \["mylogstash_host:5044"\]'
+    replace: 'hosts: ["{{ beats_server }}"]'
+    backup: true
+  become: true
+- name: run filebeat docker container
+  docker_container:
+    name: filebeat
+    image: "docker.elastic.co/beats/filebeat:{{ beats_version_tag }}"
+    state: started
+    restart_policy: unless-stopped
+    user: root
+    volumes:
+    - /var/log:/var/log
+    - /opt/filebeat-docker/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+    env:
+      strict.perms: "false"
+  become: true

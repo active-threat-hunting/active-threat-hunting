@@ -1,0 +1,30 @@
+---
+- name: copy metricbeat.deb
+  copy:
+    src: metricbeat.deb
+    dest: /tmp/metricbeat.deb
+  become: true
+- name: install metricbeat.deb
+  apt:
+    deb: /tmp/metricbeat.deb
+  become: true
+- name: copy metricbeat.yml to /etc/metricbeat/metricbeat.yml
+  copy:
+    src: metricbeat.yml
+    dest: /etc/metricbeat/metricbeat.yml
+    backup: true
+    mode: 0600
+  become: true
+- name: replace logstash host config in /etc/metricbeat/metricbeat.yml
+  replace:
+    path: /etc/metricbeat/metricbeat.yml
+    regexp: 'hosts: \["mylogstash_host:5044"\]'
+    replace: 'hosts: ["{{ beats_server }}"]'
+    backup: true
+  become: true
+- name: start and enable metricbeat service
+  systemd:
+    name: metricbeat
+    state: started
+    enabled: true
+  become: true

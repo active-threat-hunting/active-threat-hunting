@@ -1,41 +1,7 @@
 ---
-- name: "pull docker.elastic.co/beats/auditbeat:{{ beats_version_tag }}"
-  docker_image:
-    name: "docker.elastic.co/beats/auditbeat:{{ beats_version_tag }}"
-    source: pull
-  become: true
-- name: create /opt/auditbeat-docker/
-  file:
-    path: /opt/auditbeat-docker/
-    state: directory
-    mode: 0755
-  become: true
-- name: copy auditbeat.yml to /opt/auditbeat-docker/auditbeat.yml
-  copy:
-    src: auditbeat.yml
-    dest: /opt/auditbeat-docker/auditbeat.yml
-    mode: 0644
-  become: true
-- name: replace logstash host config in /opt/auditbeat-docker/auditbeat.yml
-  replace:
-    path: /opt/auditbeat-docker/auditbeat.yml
-    regexp: 'hosts: \["mylogstash_host:5044"\]'
-    replace: 'hosts: ["{{ beats_server }}"]'
-    backup: true
-  become: true
-- name: run auditbeat docker container
-  docker_container:
-    name: auditbeat
-    image: "docker.elastic.co/beats/auditbeat:{{ beats_version_tag }}"
-    state: started
-    restart_policy: unless-stopped
-    user: root
-    volumes:
-    - /opt/auditbeat-docker/auditbeat.yml:/usr/share/auditbeat/auditbeat.yml:ro
-    capabilities:
-    - AUDIT_CONTROL
-    - AUDIT_READ
-    pid_mode: host
-    env:
-      strict.perms: "false"
-  become: true
+- name: include debian.yml
+  include_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
+- name: include docker.yml
+  include_tasks: docker.yml
+  when: ansible_os_family != 'Debian'

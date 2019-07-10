@@ -1,0 +1,30 @@
+---
+- name: copy auditbeat.deb
+  copy:
+    src: auditbeat.deb
+    dest: /tmp/auditbeat.deb
+  become: true
+- name: install auditbeat.deb
+  apt:
+    deb: /tmp/auditbeat.deb
+  become: true
+- name: copy auditbeat.yml to /etc/auditbeat/auditbeat.yml
+  copy:
+    src: auditbeat.yml
+    dest: /etc/auditbeat/auditbeat.yml
+    backup: true
+    mode: 0600
+  become: true
+- name: replace logstash host config in /etc/auditbeat/auditbeat.yml
+  replace:
+    path: /etc/auditbeat/auditbeat.yml
+    regexp: 'hosts: \["mylogstash_host:5044"\]'
+    replace: 'hosts: ["{{ beats_server }}"]'
+    backup: true
+  become: true
+- name: start and enable auditbeat service
+  systemd:
+    name: auditbeat
+    state: started
+    enabled: true
+  become: true
