@@ -1,13 +1,5 @@
 ---
-- name: run metricbeat dashboard setup against elasticsearch
-  command: "docker exec metricbeat metricbeat setup --template -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=[\"{{ elasticsearch_server }}\"]'"
-  become: true
-- name: run packetbeat dashboard setup against elasticsearch
-  command: "docker exec packetbeat packetbeat setup --template -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=[\"{{ elasticsearch_server }}\"]'"
-  become: true
-- name: run auditbeat dashboard setup against elasticsearch
-  command: "docker exec auditbeat auditbeat setup --template -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=[\"{{ elasticsearch_server }}\"]'"
-  become: true
-- name: run filebeat dashboard setup against elasticsearch
-  command: "docker exec filebeat filebeat setup --template -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=[\"{{ elasticsearch_server }}\"]'"
-  become: true
+- include: package.yml
+  when: ansible_os_family == "Debian"
+- include: docker.yml
+  when: ansible_os_family != "Debian"

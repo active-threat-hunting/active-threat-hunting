@@ -1,0 +1,13 @@
+---
+- name: run metricbeat dashboard setup against elasticsearch
+  command: "metricbeat setup --template -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=[\"{{ elasticsearch_server }}\"]'"
+  become: true
+- name: run packetbeat dashboard setup against elasticsearch
+  command: "packetbeat setup --template -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=[\"{{ elasticsearch_server }}\"]'"
+  become: true
+- name: run auditbeat dashboard setup against elasticsearch
+  command: "auditbeat setup --template -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=[\"{{ elasticsearch_server }}\"]'"
+  become: true
+- name: run filebeat dashboard setup against elasticsearch
+  command: "filebeat setup --template -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=[\"{{ elasticsearch_server }}\"]'"
+  become: true
