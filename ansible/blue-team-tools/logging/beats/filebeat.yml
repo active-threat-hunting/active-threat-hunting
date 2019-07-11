@@ -6,7 +6,12 @@
     pip_executable: pip3
     pip_install_packages:
     - name: docker
+  tasks:
+  - import_role: 
+      name: geerlingguy.pip
+    when: ansible_os_family != "Debian"
+  - import_role: 
+      name: geerlingguy.docker
+    when: ansible_os_family != "Debian"
   roles:
-  - { role: geerlingguy.pip }
-  - { role: geerlingguy.docker }
   - { role: filebeat-install }
