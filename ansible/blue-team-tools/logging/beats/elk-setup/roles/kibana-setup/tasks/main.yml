@@ -1,14 +1,5 @@
 ---
-- name: run metricbeat dashboard setup against kibana
-  command: "docker exec metricbeat metricbeat setup --dashboards -e -E setup.kibana.host={{ kibana_server }}"
-  become: true
-- name: run packetbeat dashboard setup against kibana
-  command: "docker exec packetbeat packetbeat setup --dashboards -e -E setup.kibana.host={{ kibana_server }}"
-  become: true
-- name: run auditbeat dashboard setup against kibana
-  command: "docker exec auditbeat auditbeat setup --dashboards -e -E setup.kibana.host={{ kibana_server }}"
-  become: true
-- name: run filebeat dashboard setup against kibana
-  command: "docker exec filebeat filebeat setup --dashboards -e -E setup.kibana.host={{ kibana_server }}"
-  become: true
-
+- include: package.yml
+  when: ansible_os_family == "Debian"
+- include: docker.yml
+  when: ansible_os_family != "Debian"

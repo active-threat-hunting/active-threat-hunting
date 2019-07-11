@@ -1,0 +1,14 @@
+---
+- name: run metricbeat dashboard setup against kibana
+  command: "metricbeat setup --dashboards -e -E setup.kibana.host={{ kibana_server }}"
+  become: true
+- name: run packetbeat dashboard setup against kibana
+  command: "packetbeat setup --dashboards -e -E setup.kibana.host={{ kibana_server }}"
+  become: true
+- name: run auditbeat dashboard setup against kibana
+  command: "auditbeat setup --dashboards -e -E setup.kibana.host={{ kibana_server }}"
+  become: true
+- name: run filebeat dashboard setup against kibana
+  command: "filebeat setup --dashboards -e -E setup.kibana.host={{ kibana_server }}"
+  become: true
+
