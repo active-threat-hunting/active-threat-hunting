@@ -13,7 +13,7 @@
   become: true
 - name: modprobe necessary nfs linux kernel modules
   modprobe:
-    name: {{ item }} 
+    name: "{{ item }}" 
     state: present
   with_items:
   - nfs
@@ -52,7 +52,6 @@
   docker_container:
     name: nfs
     image: erichough/nfs-server:latest
-    user: 2310
     state: started
     capabilities:
     - SYS_ADMIN
