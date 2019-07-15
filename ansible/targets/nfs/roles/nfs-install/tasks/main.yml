@@ -48,6 +48,9 @@
     owner: 2310
     state: directory
   become: true
+- name: include debian.yml
+  include: debian.yml
+  when: ansible_os_family == "Debian"
 - name: run nfs docker container
   docker_container:
     name: nfs
@@ -64,3 +67,4 @@
     - 2049:2049
     restart_policy: unless-stopped
   become: true
+  when: ansible_os_family != "Debian"

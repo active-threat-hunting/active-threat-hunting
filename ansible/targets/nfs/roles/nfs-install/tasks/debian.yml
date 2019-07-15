@@ -1,0 +1,32 @@
+---
+- name: copy apparmor profile to /tmp/erichough-nfs
+  copy:
+    src: erichough-nfs
+    dest: /tmp/erichough-nfs
+- name: install apparmor-utils 
+  apt:
+    name: apparmor-utils
+    update_cache: yes
+    state: present
+  become: true
+- name: apply apparmor profile
+  shell: apparmor_parser -r -W /tmp/erichough-nfs
+  become: true
+- name: run nfs docker container
+  docker_container:
+    name: nfs
+    image: erichough/nfs-server:latest
+    state: started
+    capabilities:
+    - SYS_ADMIN
+    volumes:
+    - /opt/nfs-docker:/shares
+    env:
+      NFS_EXPORT_0: '/shares/export1                  *(ro,no_subtree_check)'
+      NFS_EXPORT_1: '/shares/export2                  *(ro,no_subtree_check)'
+    ports:
+    - 2049:2049
+    security_opts:
+    - apparmor:erichough-nfs
+    restart_policy: unless-stopped
+  become: true
