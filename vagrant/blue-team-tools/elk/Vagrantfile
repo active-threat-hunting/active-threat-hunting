@@ -8,30 +8,10 @@ Vagrant.configure("2") do |config|
       v.cpus = 2
     end
   end
-  
-  config.vm.provision "shell", inline: <<-SHELL
-    apt-get update
-    apt-get dist-upgrade -y
-    
-    apt-get install curl python3-pip docker.io -y
-    pip3 install docker
-    adduser --system --no-create-home --group --uid 1050 docker-elk
-    systemctl enable --now docker.service
-    
-    docker pull elasticsearch:7.2.0
-    docker volume create elk_elasticsearch_data
-    sysctl -w vm.max_map_count=262144
-    docker run -d --name=elk_elasticsearch --restart=unless-stopped -p 9200:9200 -p 9300:9300 -v elk_elasticsearch_data:/usr/share/elasticsearch/data -e 'http.host=0.0.0.0' -e 'transport.host=0.0.0.0' -e 'xpack.security.enabled=false' -e 'cluster.name=elk' -e 'discovery.type=single-node' elasticsearch:7.2.0
-    
-    docker pull kibana:7.2.0
-    docker run -d --name=elk_kibana --user=1050 --restart=unless-stopped -p 5601:5601 --link elk_elasticsearch:elasticsearch -e 'SERVER_NAME=localhost' -e 'ELASTICSEARCH_HOSTS=http://elasticsearch:9200' kibana:7.2.0
-
-    docker pull logstash:7.2.0
-    mkdir -p /opt/elk-docker/logstash/conf
-    chmod 700 /opt/elk-docker
-    curl 'https://gist.githubusercontent.com/heywoodlh/57d4f3ea860b69af25dbcf3ff459f91f/raw/3150073ad291d6a90266e13f2f20c4dff9172739/logstash-beats.conf' -o /opt/elk-docker/logstash/conf/logstash-beats.conf
-    curl 'https://gist.githubusercontent.com/heywoodlh/57d4f3ea860b69af25dbcf3ff459f91f/raw/3150073ad291d6a90266e13f2f20c4dff9172739/logstash-netflow.conf' -o /opt/elk-docker/logstash/conf/logstash-beats.conf
-    curl 'https://gist.githubusercontent.com/heywoodlh/57d4f3ea860b69af25dbcf3ff459f91f/raw/3150073ad291d6a90266e13f2f20c4dff9172739/logstash-syslog.conf' -o /opt/elk-docker/logstash/conf/logstash-syslog.conf 
-    docker run -d --name=elk_logstash --user=1050 --restart=unless-stopped --link elk_elasticsearch:elasticsearch -p 5044:5044 -p 9995:9995 -p 1514:1514 -v /opt/elk-docker/logstash/conf:/usr/share/logstash/pipeline logstash:7.2.0
-  SHELL
+ 
+  config.vm.provision "file", source: "files/logstash", destination: "/opt/elk-docker/logstash/conf"
+ 
+  config.vm.provision "shell" do |s|
+    s.path "setup.sh"
+  end
 end
