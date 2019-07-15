@@ -65,6 +65,13 @@
       NFS_EXPORT_1: '/shares/export2                  *(ro,no_subtree_check)'
     ports:
     - 2049:2049
+    - 2049:2049/udp
+    - 111:111
+    - 111:111/udp
+    - 32765:32765
+    - 32765:32765/udp
+    - 32767:32767
+    - 32767:32767/udp
     restart_policy: unless-stopped
   become: true
   when: ansible_os_family != "Debian"
