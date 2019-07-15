@@ -1,0 +1,67 @@
+---
+- name: create nfs system user
+  user:
+    name: nfs-docker
+    comment: 'nfs docker system user'
+    system: true
+    uid: 2310
+  become: true
+- name: pull erichough/nfs-server image
+  docker_image:
+    name: erichough/nfs-server
+    tag: latest
+  become: true
+- name: modprobe necessary nfs linux kernel modules
+  modprobe:
+    name: {{ item }} 
+    state: present
+  with_items:
+  - nfs
+  - nfsd
+  - rpcsec_gss_krb5
+  become: true
+- name: create /opt/nfs-docker directory
+  file:
+    path: /opt/nfs-docker
+    mode: 0700
+    owner: 2310
+    state: directory
+  become: true
+- name: create /opt/nfs-docker/export1 directory
+  file:
+    path: /opt/nfs-docker/export1
+    mode: 0700
+    owner: 2310
+    state: directory
+  become: true
+- name: create /opt/nfs-docker/export1 directory
+  file:
+    path: /opt/nfs-docker/export1
+    mode: 0700
+    owner: 2310
+    state: directory
+  become: true
+- name: create /opt/nfs-docker/export2 directory
+  file:
+    path: /opt/nfs-docker/export2
+    mode: 0700
+    owner: 2310
+    state: directory
+  become: true
+- name: run nfs docker container
+  docker_container:
+    name: nfs
+    image: erichough/nfs-server:latest
+    user: 2310
+    state: started
+    capabilities:
+    - SYS_ADMIN
+    volumes:
+    - /opt/nfs-docker:/shares
+    env:
+      NFS_EXPORT_0: '/shares/export1                  *(ro,no_subtree_check)'
+      NFS_EXPORT_1: '/shares/export2                  *(ro,no_subtree_check)'
+    ports:
+    - 2049:2049
+    restart_policy: unless-stopped
+  become: true
