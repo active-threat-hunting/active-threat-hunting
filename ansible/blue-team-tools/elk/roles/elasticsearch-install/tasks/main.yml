@@ -27,6 +27,9 @@
       http.host: "0.0.0.0"
       transport.host: "0.0.0.0"
       xpack.security.enabled: "false"
+      cluster.routing.allocation.disk.threshold_enabled: "true"
+      cluster.routing.allocation.disk.watermark.low: "5gb"
+      cluster.routing.allocation.disk.watermark.high: "2gb"
       cluster.name: "elk"
       discovery.type: "single-node"
     ulimits:
