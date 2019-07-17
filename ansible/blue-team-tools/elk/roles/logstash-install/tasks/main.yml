@@ -19,6 +19,24 @@
     mode: 0700
     owner: "{{ elk_system_user_uid }}"
   become: true
+- name: "replace logstash elasticsearch username in {{ item }}"
+  replace:
+    path: "{{ item }}"
+    regexp: 'user => ath-logstash'
+    replace: "user => {{ logstash_es_username }}"
+  with_items:
+  - "/opt/elk-docker/logstash/conf/logstash-beats.conf"
+  - "/opt/elk-docker/logstash/conf/logstash-netflow.conf"
+  - "/opt/elk-docker/logstash/conf/logstash-syslog.conf" 
+- name: "replace logstash elasticsearch password in {{ item }}"
+  replace:
+    path: "{{ item }}"
+    regexp: 'password => ath-logstash'
+    replace: "user => {{ logstash_es_password }}"
+  with_items:
+  - "/opt/elk-docker/logstash/conf/logstash-beats.conf"
+  - "/opt/elk-docker/logstash/conf/logstash-netflow.conf"
+  - "/opt/elk-docker/logstash/conf/logstash-syslog.conf"
 - name: run logstash docker container
   docker_container:
     name: elk_logstash

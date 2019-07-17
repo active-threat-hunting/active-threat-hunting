@@ -37,3 +37,10 @@
     ulimits:
     - nofile:65536:65536
   become: true
+- name: create and set logstash user password
+  shell: "docker exec elk_elasticsearch curl -X POST localhost:9200/_security/user/{{ logstash_es_username }} -H 'Content-Type: application/json' -d'{ \"password\" : \"{{ logstash_es_password }}\", \"roles\" : [ \"logstash_writer\"] }'"
+  register: task_result
+  until: task_result.rc == 0
+  retries: 10
+  delay: 5
+  become: true
