@@ -1,11 +1,15 @@
 ---
 elk:
   hosts:
-    192.168.1.5:
+    192.168.1.5
   vars:
     ansible_ssh_user: ansible
     ansible_ssh_private_key_file: /Users/ansible/.ssh/id_rsa
     ansible_python_interpreter: "/usr/bin/env python3"
+    bootstrap_password: "changeme"
+    xpack_password: "changeme"
+    xpack_encryption_key: "something_at_least_32_characters"
+    self_sign_ssl_options: "'/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=192.168.1.5'"
     elk_uri: "localhost"
     elk_version_tag: "7.2.0"
     elk_system_user: "elk-docker"

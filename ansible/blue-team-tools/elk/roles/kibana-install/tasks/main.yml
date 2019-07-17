@@ -1,4 +1,26 @@
 ---
+- name: create /opt/elk-docker/kibana directory
+  file:
+    path: /opt/elk-docker/kibana/ssl
+    mode: 0700
+    owner: "{{ elk_system_user_uid }}"
+    state: directory
+  become: true
+- name: generate cert
+  shell: "openssl req -x509 -newkey rsa:4096 -nodes -keyout /opt/elk-docker/kibana/ssl/server.key -out /opt/elk-docker/kibana/ssl/server.cert -days 365 -subj {{ self_sign_ssl_options }}"
+  become: true
+- name: change permissions to elk system user for SSL cert and keys
+  file:
+    path: /opt/elk-docker/kibana/ssl/server.cert
+    mode: 0600
+    owner: "{{ elk_system_user_uid }}"
+  become: true
+- name: change permissions to elk system user for SSL cert and keys
+  file:
+    path: /opt/elk-docker/kibana/ssl/server.key
+    mode: 0600
+    owner: "{{ elk_system_user_uid }}"
+  become: true
 - name: pull kibana docker image
   docker_image:
     name: kibana
@@ -12,6 +34,8 @@
     state: started
     restart_policy: unless-stopped 
     user: "{{ elk_system_user_uid }}"
+    volumes:
+    - /opt/elk-docker/kibana/ssl:/opt/ssl
     links:
     - elk_elasticsearch:elasticsearch
     ports:
@@ -19,4 +43,10 @@
     env:
       SERVER_NAME: "{{ elk_uri }}"
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      ELASTICSEARCH_USERNAME: "elastic"
+      ELASTICSEARCH_PASSWORD: "{{ xpack_password }}"
+      XPACK_SECURITY_ENCRYPTIONKEY: "{{ xpack_encryption_key }}"
+      SERVER_SSL_ENABLED: "true"
+      SERVER_SSL_KEY: "/opt/ssl/server.key"
+      SERVER_SSL_CERTIFICATE: "/opt/ssl/server.cert"
   become: true

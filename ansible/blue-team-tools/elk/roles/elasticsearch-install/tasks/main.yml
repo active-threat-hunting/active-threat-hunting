@@ -33,6 +33,7 @@
       cluster.routing.allocation.disk.watermark.high: "2gb"
       cluster.name: "elk"
       discovery.type: "single-node"
+      ELASTIC_PASSWORD: "{{ xpack_password }}"
     ulimits:
     - nofile:65536:65536
   become: true
