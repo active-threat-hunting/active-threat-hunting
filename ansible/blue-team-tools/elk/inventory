@@ -8,8 +8,6 @@ elk:
     ansible_python_interpreter: "/usr/bin/env python3"
     xpack_password: "changeme"
     xpack_encryption_key: "something_at_least_32_characters"
-    logstash_es_username: "changeme"
-    logstash_es_password: "changeme"
     self_sign_ssl_options: "'/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=192.168.1.5'"
     elk_ip: "192.168.1.5"
     elk_uri: "192.168.1.5"
