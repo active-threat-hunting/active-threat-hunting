@@ -6,6 +6,12 @@
     owner: "{{ elk_system_user_uid }}"
     state: directory
   become: true
+- name: configure openssl (add ip address to subjectAltName in /etc/ssl/openssl.cnf)
+  lineinfile:
+    path: /etc/ssl/openssl.cnf
+    insertafter: '\[ v3_ca \]'
+    line: "subjectAltName = IP:{{ elk_ip }}"
+  become: true 
 - name: generate cert
   shell: "openssl req -x509 -newkey rsa:4096 -nodes -keyout /opt/elk-docker/kibana/ssl/server.key -out /opt/elk-docker/kibana/ssl/server.cert -days 365 -subj {{ self_sign_ssl_options }}"
   become: true
@@ -32,7 +38,7 @@
     name: elk_kibana
     image: "kibana:{{ elk_version_tag }}"
     state: started
-    restart_policy: unless-stopped 
+    restart_policy: unless-stopped
     user: "{{ elk_system_user_uid }}"
     volumes:
     - /opt/elk-docker/kibana/ssl:/opt/ssl

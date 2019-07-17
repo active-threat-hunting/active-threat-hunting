@@ -1,14 +1,14 @@
 ---
 - name: run metricbeat dashboard setup against kibana
-  command: "metricbeat setup --dashboards -e -E setup.kibana.username=\"{{ elasticsearch_username }}\" -E setup.kibana.password=\"{{ elasticsearch_password }}\" -E setup.kibana.host={{ kibana_server }}"
+  command: "metricbeat setup --dashboards -e -E setup.kibana.username=\"{{ elasticsearch_username }}\" -E setup.kibana.password=\"{{ elasticsearch_password }}\" -E setup.kibana.host={{ kibana_server }} -E setup.kibana.ssl.verification_mode=none"
   become: true
 - name: run packetbeat dashboard setup against kibana
-  command: "packetbeat setup --dashboards -e -E setup.kibana.username=\"{{ elasticsearch_username }}\" -E setup.kibana.password=\"{{ elasticsearch_password }}\" -E setup.kibana.host={{ kibana_server }}"
+  command: "packetbeat setup --dashboards -e -E setup.kibana.username=\"{{ elasticsearch_username }}\" -E setup.kibana.password=\"{{ elasticsearch_password }}\" -E setup.kibana.host={{ kibana_server }} -E setup.kibana.ssl.verification_mode=none"
   become: true
 - name: run auditbeat dashboard setup against kibana
-  command: "auditbeat setup --dashboards -e -E setup.kibana.username=\"{{ elasticsearch_username }}\" -E setup.kibana.password=\"{{ elasticsearch_password }}\" -E setup.kibana.host={{ kibana_server }}"
+  command: "auditbeat setup --dashboards -e -E setup.kibana.username=\"{{ elasticsearch_username }}\" -E setup.kibana.password=\"{{ elasticsearch_password }}\" -E setup.kibana.host={{ kibana_server }} -E setup.kibana.ssl.verification_mode=none"
   become: true
 - name: run filebeat dashboard setup against kibana
-  command: "filebeat setup --dashboards -e -E setup.kibana.username=\"{{ elasticsearch_username }}\" -E setup.kibana.password=\"{{ elasticsearch_password }}\" -E setup.kibana.host={{ kibana_server }}"
+  command: "filebeat setup --dashboards -e -E setup.kibana.username=\"{{ elasticsearch_username }}\" -E setup.kibana.password=\"{{ elasticsearch_password }}\" -E setup.kibana.host={{ kibana_server }} -E setup.kibana.ssl.verification_mode=none"
   become: true
 
