@@ -52,6 +52,8 @@
       ELASTICSEARCH_USERNAME: "elastic"
       ELASTICSEARCH_PASSWORD: "{{ xpack_password }}"
       XPACK_SECURITY_ENCRYPTIONKEY: "{{ xpack_encryption_key }}"
+      XPACK_MONITORING_ENABLED: "true"
+      XPACK_MONITORING_UI_ENABLED: "true" 
       XPACK_WATCHER_ENABLED: "true"
       SERVER_SSL_ENABLED: "true"
       SERVER_SSL_KEY: "/opt/ssl/server.key"
