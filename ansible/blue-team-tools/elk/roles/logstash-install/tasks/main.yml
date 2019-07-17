@@ -23,7 +23,7 @@
   replace:
     path: "{{ item }}"
     regexp: 'user => ath-logstash'
-    replace: "user => {{ logstash_es_username }}"
+    replace: "user => elastic"
   with_items:
   - "/opt/elk-docker/logstash/conf/logstash-beats.conf"
   - "/opt/elk-docker/logstash/conf/logstash-netflow.conf"
@@ -32,7 +32,7 @@
   replace:
     path: "{{ item }}"
     regexp: 'password => ath-logstash'
-    replace: "password => {{ logstash_es_password }}"
+    replace: "password => {{ xpack_password }}"
   with_items:
   - "/opt/elk-docker/logstash/conf/logstash-beats.conf"
   - "/opt/elk-docker/logstash/conf/logstash-netflow.conf"

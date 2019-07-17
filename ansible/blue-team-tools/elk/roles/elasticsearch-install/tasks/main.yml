@@ -37,17 +37,3 @@
     ulimits:
     - nofile:65536:65536
   become: true
-- name: create logstash_writer role
-  shell: "docker exec elk_elasticsearch curl -X POST -u elastic:{{ xpack_password }} http://localhost:9200/_security/role/logstash_writer -H 'Content-Type: application/json' -d '{ \"cluster\": [\"manage_index_templates\", \"monitor\", \"manage_ilm\"], \"indices\": [ { \"names\": [ \"logstash-*\" ], \"privileges\": [\"write\",\"delete\",\"create_index\",\"manage\",\"manage_ilm\"] } ] }'"
-  register: task_result
-  until: task_result.rc == 0
-  retries: 10
-  delay: 7
-  become: true
-- name: create and set logstash user password
-  shell: "docker exec elk_elasticsearch curl -X POST -u elastic:{{ xpack_password }} localhost:9200/_security/user/{{ logstash_es_username }} -H 'Content-Type: application/json' -d'{ \"password\" : \"{{ logstash_es_password }}\", \"roles\" : [ \"logstash_writer\"] }'"
-  register: task_result
-  until: task_result.rc == 0
-  retries: 10
-  delay: 10
-  become: true
