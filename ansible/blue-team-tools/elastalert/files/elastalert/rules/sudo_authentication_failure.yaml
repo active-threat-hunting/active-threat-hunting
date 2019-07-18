@@ -13,9 +13,3 @@ filter:
 
 alert:
 - debug
-
-alert_subject_args:
-- "@timestamp"
-- host.hostname
-- host.os
-- message
