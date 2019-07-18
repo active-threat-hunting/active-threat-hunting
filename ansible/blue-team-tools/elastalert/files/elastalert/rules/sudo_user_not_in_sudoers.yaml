@@ -9,7 +9,7 @@ timeframe:
 filter:
 - query:
     query_string: 
-      query: "user NOT in sudoers"
+      query: '"user NOT in sudoers"'
 
 alert:
-- "debug"
+- debug
