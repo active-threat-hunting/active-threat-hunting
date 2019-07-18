@@ -24,6 +24,18 @@
     src: elastalert/
     dest: /opt/elastalert
   become: true
+- name: add elasticsearch username and password to elastalert config
+  replace:
+    path: /opt/elastalert/config/elastalert.yaml
+    regexp: '#es_username: someusername'
+    replace: "es_username: {{ es_username }}"
+  become: true
+- name: add elasticsearch username and password to elastalert config
+  replace:
+    path: /opt/elastalert/config/elastalert.yaml
+    regexp: '#es_password: somepassword'
+    replace: "es_password: {{ es_password }}"
+  become: true
 - name: run elastalert docker container
   docker_container:
     name: elastalert
