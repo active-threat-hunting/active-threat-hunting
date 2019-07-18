@@ -1,0 +1,15 @@
+name: ssh login failures
+type: frequency
+index: filebeat-*
+
+num_events: 3
+timeframe:
+  minutes: 20
+
+filter:
+- query:
+    query_string: 
+      query: "sshd AND 'Failed password"
+
+alert:
+- "debug"

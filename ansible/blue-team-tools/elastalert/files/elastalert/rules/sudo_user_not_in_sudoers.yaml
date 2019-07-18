@@ -1,0 +1,15 @@
+name: sudo user not in sudoers
+type: frequency
+index: filebeat-*
+
+num_events: 1
+timeframe:
+  minutes: 5
+
+filter:
+- query:
+    query_string: 
+      query: "user NOT in sudoers"
+
+alert:
+- "debug"
