@@ -12,8 +12,7 @@ filter:
       query: "sshd AND 'Failed password'"
 
 alert:
-- slack:
-    slack_webhook_url: [slack_webhook]
+- debug
 
 alert_subject_args:
 - "@timestamp"

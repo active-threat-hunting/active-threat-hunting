@@ -29,15 +29,43 @@
     regexp: '#es_password: somepassword'
     replace: "es_password: {{ es_password }}"
   become: true
+- name: disable debug alert
+  lineinfile:
+    path: "{ item.path }"
+    line: "{ item.line }"
+    state: absent
+  with_items:
+  - { path: /opt/elastalert/rules/ssh_login_failures.yaml } 
+  - { path: /opt/elastalert/rules/sudo_authentication_failure.yaml } 
+  - { path: /opt/elastalert/rules/sudo_user_not_in_sudoers.yaml }
+  - { line: 'alert:' }
+  - { line: '- debug' }
+  when: slack_webhook is defined
+  become: true
+- name: add webhook url
+  lineinfile:
+    path: "{ item.path }"
+    insertafter: EOF
+    line: "{ item.line }"
+  with_items:
+  - { path: /opt/elastalert/rules/ssh_login_failures.yaml } 
+  - { path: /opt/elastalert/rules/sudo_authentication_failure.yaml } 
+  - { path: /opt/elastalert/rules/sudo_user_not_in_sudoers.yaml }
+  - { line: 'alert:' }
+  - { line: '- slack:' }
+  - { line: "  slack_webhook_url: {{ slack_webhook }}" }
+  when: slack_webhook is defined
+  become: true
 - name: add webhook url
   replace:
-    path: "{ item }"
+    path: "{ item.path }"
     regexp: 'slack_webhook_url: [slack_webhook]'
     replace: "slack_webhook_url: {{ slack_webhook }}"
   with_items:
-  - /opt/elastalert/rules/ssh_login_failures.yaml
-  - /opt/elastalert/rules/sudo_authentication_failure.yaml 
-  - /opt/elastalert/rules/sudo_user_not_in_sudoers.yaml
+  - { path: /opt/elastalert/rules/ssh_login_failures.yaml }
+  - { path: /opt/elastalert/rules/sudo_authentication_failure.yaml }
+  - { path: /opt/elastalert/rules/sudo_user_not_in_sudoers.yaml }
+  when: slack_webhook is defined
   become: true
 - name: run elastalert docker container
   docker_container:
