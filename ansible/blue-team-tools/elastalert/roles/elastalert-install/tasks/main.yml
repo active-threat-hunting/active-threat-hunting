@@ -45,8 +45,8 @@
 - name: add webhook url
   lineinfile:
     path: "{ item.path }"
-    insertafter: EOF
     line: "{ item.line }"
+    insertafter: EOF
   with_items:
   - { path: /opt/elastalert/rules/ssh_login_failures.yaml } 
   - { path: /opt/elastalert/rules/sudo_authentication_failure.yaml } 
@@ -54,17 +54,6 @@
   - { line: 'alert:' }
   - { line: '- slack:' }
   - { line: "  slack_webhook_url: {{ slack_webhook }}" }
-  when: slack_webhook is defined
-  become: true
-- name: add webhook url
-  replace:
-    path: "{ item.path }"
-    regexp: 'slack_webhook_url: [slack_webhook]'
-    replace: "slack_webhook_url: {{ slack_webhook }}"
-  with_items:
-  - { path: /opt/elastalert/rules/ssh_login_failures.yaml }
-  - { path: /opt/elastalert/rules/sudo_authentication_failure.yaml }
-  - { path: /opt/elastalert/rules/sudo_user_not_in_sudoers.yaml }
   when: slack_webhook is defined
   become: true
 - name: run elastalert docker container
