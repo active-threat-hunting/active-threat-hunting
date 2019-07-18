@@ -9,7 +9,7 @@ timeframe:
 filter:
 - query:
     query_string: 
-      query: "sshd AND 'Failed password"
+      query: "sshd AND 'Failed password'"
 
 alert:
 - "debug"
