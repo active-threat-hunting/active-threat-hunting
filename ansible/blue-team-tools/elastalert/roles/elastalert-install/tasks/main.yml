@@ -54,7 +54,7 @@
 - name: add slack webhook
   lineinfile:
     dest: "{{ item }}"
-    line: "  slack_webhook_url: {{ slack_webhook }}"
+    line: "    slack_webhook_url: {{ slack_webhook }}"
     insertafter: "^- slack:"
   with_items:
   - /opt/elastalert/rules/ssh_login_failures.yaml 
