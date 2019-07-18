@@ -29,6 +29,16 @@
     regexp: '#es_password: somepassword'
     replace: "es_password: {{ es_password }}"
   become: true
+- name: add webhook url
+  replace:
+    path: "{ item }"
+    regexp: 'slack_webhook_url: [slack_webhook]'
+    replace: "slack_webhook_url: {{ slack_webhook }}"
+  with_items:
+  - /opt/elastalert/rules/ssh_login_failures.yaml
+  - /opt/elastalert/rules/sudo_authentication_failure.yaml 
+  - /opt/elastalert/rules/sudo_user_not_in_sudoers.yaml
+  become: true
 - name: run elastalert docker container
   docker_container:
     name: elastalert

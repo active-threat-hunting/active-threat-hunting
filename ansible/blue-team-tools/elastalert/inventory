@@ -9,3 +9,4 @@ elastalert:
     elastalert_tag: "3.0.0-beta.0"
     es_username: changeme
     es_password: changeme
+    slack_webhook: changeme
