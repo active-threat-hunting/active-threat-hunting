@@ -31,35 +31,35 @@
   become: true
 - name: disable debug alert
   lineinfile:
-    path: "{ item.path }"
+    dest: "{{ item }}"
     regexp: "^- debug"
     state: absent
   with_items:
-  - { path: "/opt/elastalert/rules/ssh_login_failures.yaml" } 
-  - { path: "/opt/elastalert/rules/sudo_authentication_failure.yaml" } 
-  - { path: "/opt/elastalert/rules/sudo_user_not_in_sudoers.yaml" }
+  - /opt/elastalert/rules/ssh_login_failures.yaml 
+  - /opt/elastalert/rules/sudo_authentication_failure.yaml 
+  - /opt/elastalert/rules/sudo_user_not_in_sudoers.yaml
   when: slack_webhook is defined
   become: true
-- name: add webhook url
+- name: add slack notification
   lineinfile:
-    path: "{ item.path }"
+    dest: "{{ item }}"
     line: "- slack:"
     insertafter: "^alert:"
   with_items:
-  - { path: "/opt/elastalert/rules/ssh_login_failures.yaml" } 
-  - { path: "/opt/elastalert/rules/sudo_authentication_failure.yaml" } 
-  - { path: "/opt/elastalert/rules/sudo_user_not_in_sudoers.yaml" }
+  - /opt/elastalert/rules/ssh_login_failures.yaml
+  - /opt/elastalert/rules/sudo_authentication_failure.yaml 
+  - /opt/elastalert/rules/sudo_user_not_in_sudoers.yaml
   when: slack_webhook is defined
   become: true
-- name: add webhook url
+- name: add slack webhook
   lineinfile:
-    path: "{ item.path }"
+    dest: "{{ item }}"
     line: "  slack_webhook_url: {{ slack_webhook }}"
     insertafter: "^- slack:"
   with_items:
-  - { path: "/opt/elastalert/rules/ssh_login_failures.yaml" } 
-  - { path: "/opt/elastalert/rules/sudo_authentication_failure.yaml" } 
-  - { path: "/opt/elastalert/rules/sudo_user_not_in_sudoers.yaml" }
+  - /opt/elastalert/rules/ssh_login_failures.yaml 
+  - /opt/elastalert/rules/sudo_authentication_failure.yaml 
+  - /opt/elastalert/rules/sudo_user_not_in_sudoers.yaml
   when: slack_webhook is defined
   become: true
 - name: run elastalert docker container
