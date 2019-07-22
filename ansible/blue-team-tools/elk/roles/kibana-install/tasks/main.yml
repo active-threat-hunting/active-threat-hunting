@@ -75,4 +75,5 @@
 - name: install elastalert kibana plugin
   shell: "docker exec elk_kibana bin/kibana-plugin install {{ elastalert_plugin_url }}"
   become: true
-  when: elastalert_plugin_url is defined  
+  when: elastalert_plugin_url is defined
+  ignore_errors: true
