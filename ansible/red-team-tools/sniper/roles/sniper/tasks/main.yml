@@ -5,11 +5,5 @@
     source: pull
   become: true
 - name: run sn1per
-  docker_container:
-    name: sniper
-    image: menzo/sn1per-docker
-    command: "sniper -t {{ target_net }}"
-    auto_remove: yes
-    volumes:
-    - /tmp/sniper:/tmp/sniper
+  shell: "docker exec --rm -v /tmp/sniper:/tmp/ menzo/sn1per-docker sniper -t {{ target_net }} >> /tmp/{{ target_net }}-$(date +%M-%d-%Y_%H:%S).txt"
   become: true 
