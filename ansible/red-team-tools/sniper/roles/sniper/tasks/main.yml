@@ -5,5 +5,5 @@
     source: pull
   become: true
 - name: run sn1per
-  shell: "docker exec --rm -v /tmp/sniper:/tmp/ menzo/sn1per-docker sniper -t {{ target_net }} >> /tmp/{{ target_net }}-$(date +%M-%d-%Y_%H:%S).txt"
+  shell: "docker exec --rm -ti -v /tmp/sniper:/tmp/sniper menzo/sn1per-docker sniper -t {{ target_net }} >> /tmp/sniper/$(date +%M-%d-%Y_%H:%S).txt"
   become: true 
