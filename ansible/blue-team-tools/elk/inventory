@@ -20,3 +20,4 @@ elk:
     logstash_syslog_port: 1514
     logstash_beats_port: 5044
     logstash_netflow_port: 9995
+    #elastalert_plugin_url: "https://github.com/bitsensor/elastalert-kibana-plugin/releases/download/1.1.0/elastalert-kibana-plugin-1.1.0-7.2.0.zip"

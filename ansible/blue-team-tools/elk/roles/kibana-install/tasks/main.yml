@@ -6,6 +6,13 @@
     owner: "{{ elk_system_user_uid }}"
     state: directory
   become: true
+- name: create /opt/elk-docker/kibana directory
+  file:
+    path: /opt/elk-docker/kibana/plugins
+    mode: 0700
+    owner: "{{ elk_system_user_uid }}"
+    state: directory
+  become: true
 - name: configure openssl (add ip address to subjectAltName in /etc/ssl/openssl.cnf)
   lineinfile:
     path: /etc/ssl/openssl.cnf
@@ -42,6 +49,7 @@
     user: "{{ elk_system_user_uid }}"
     volumes:
     - /opt/elk-docker/kibana/ssl:/opt/ssl
+    - /opt/elk-docker/kibana/plugins:/usr/share/kibana/plugins
     links:
     - elk_elasticsearch:elasticsearch
     ports:
@@ -54,8 +62,11 @@
       XPACK_SECURITY_ENCRYPTIONKEY: "{{ xpack_encryption_key }}"
       XPACK_MONITORING_ENABLED: "true"
       XPACK_MONITORING_UI_ENABLED: "true" 
-      XPACK_WATCHER_ENABLED: "true"
       SERVER_SSL_ENABLED: "true"
       SERVER_SSL_KEY: "/opt/ssl/server.key"
       SERVER_SSL_CERTIFICATE: "/opt/ssl/server.cert"
   become: true
+- name: install elastalert kibana plugin
+  shell: "docker exec elk_kibana bin/kibana-plugin install {{ elastalert_plugin_url }}"
+  become: true
+  when: elastalert_plugin_url is defined  
