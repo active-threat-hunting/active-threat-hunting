@@ -1,0 +1,15 @@
+---
+- name: docker pull menzo/sn1per-docker
+  docker_image:
+    name: menzo/sn1per-docker
+    source: pull
+  become: true
+- name: run sn1per
+  docker_container:
+    name: sniper
+    image: menzo/sn1per-docker
+    command: "sniper -t {{ target_net }}"
+    auto_remove: yes
+    volumes:
+    - /tmp/sniper:/tmp/sniper
+  become: true 
