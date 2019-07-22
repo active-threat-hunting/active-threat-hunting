@@ -18,10 +18,16 @@
     path: /etc/ssl/openssl.cnf
     insertafter: '\[ v3_ca \]'
     line: "subjectAltName = IP:{{ elk_ip }}"
+  become: true
+- name: check if cert exists
+  stat:
+    path: /opt/elk-docker/kibana/ssl/server.cert
+  register: file
   become: true 
 - name: generate cert
   shell: "openssl req -x509 -newkey rsa:4096 -nodes -keyout /opt/elk-docker/kibana/ssl/server.key -out /opt/elk-docker/kibana/ssl/server.cert -days 365 -subj {{ self_sign_ssl_options }}"
   become: true
+  when: file.stat.exists
 - name: change permissions to elk system user for SSL cert and keys
   file:
     path: /opt/elk-docker/kibana/ssl/server.cert
