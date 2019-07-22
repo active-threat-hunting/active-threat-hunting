@@ -69,6 +69,8 @@
     state: started
     restart_policy: unless-stopped
     network_mode: host
+    ports:
+    - 3030:3030
     volumes:
     - /opt/elastalert/config/elastalert.yaml:/opt/elastalert/config.yaml
     - /opt/elastalert/config/elastalert-test.yaml:/opt/elastalert/config-test.yaml
