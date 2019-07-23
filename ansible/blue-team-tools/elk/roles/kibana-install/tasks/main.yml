@@ -27,7 +27,7 @@
 - name: generate cert
   shell: "openssl req -x509 -newkey rsa:4096 -nodes -keyout /opt/elk-docker/kibana/ssl/server.key -out /opt/elk-docker/kibana/ssl/server.cert -days 365 -subj {{ self_sign_ssl_options }}"
   become: true
-  when: file.stat.exists
+  when: file.stat.exists == False
 - name: change permissions to elk system user for SSL cert and keys
   file:
     path: /opt/elk-docker/kibana/ssl/server.cert

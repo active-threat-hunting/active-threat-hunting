@@ -79,15 +79,23 @@
     state: started
     restart_policy: unless-stopped
   become: true
+- name: check if cert exists
+  stat:
+    path: /opt/fleet-docker/server.cert
+  register: file
+  become: true
 - name: generate ssl key
   shell: sudo openssl genrsa -out /opt/fleet-docker/server.key 4096
   become: true
+  when: file.stat.exists == False
 - name: generate csr
   shell: openssl req -new -key /opt/fleet-docker/server.key -out /opt/fleet-docker/server.csr -subj "{{ self_sign_ssl_options }}"
   become: true
+  when: file.stat.exists == False
 - name: generate cert
   shell: openssl x509 -req -days 366 -in /opt/fleet-docker/server.csr -signkey /opt/fleet-docker/server.key -out /opt/fleet-docker/server.cert
   become: true
+  when: file.stat.exists == False
 - name: change ownership of /opt/fleet-docker to fleet-docker
   file:
     path: /opt/fleet-docker/server.csr
@@ -151,6 +159,7 @@
       KOLIDE_SERVER_CERT: /etc/kolide/server.cert
       KOLIDE_SERVER_KEY: /etc/kolide/server.key
       KOLIDE_AUTH_JWT_KEY: "{{ jwt_key }}"
+      KOLIDE_FILESYSTEM_ENABLE_LOG_ROTATION: "true"
     volumes:
     - /opt/fleet-docker:/etc/kolide/
   become: true
