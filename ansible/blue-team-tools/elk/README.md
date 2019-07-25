@@ -27,10 +27,16 @@ Access the web interface for Kibana on the HTTP port of the remote server that w
 After the install, it would be recommended to use firewall rules to restrict access to your ELK instance. The exposed ports are (if left default in the inventory file):
 
 9200 -- Elasticsearch REST API port
+
 9300 -- Elasticsearch node communication port (for clustering)
+
 5601 -- Kibana web interface
+
 1514 -- Logstash syslog input
+
 5044 -- Logstash beats input
+
 9995 -- Logstash netflow port
+
 
 It is highly recommended to restrict Elasticsearch to only be accessible from other Elasticsearch nodes and from localhost. Kibana should also be configured to use a password for logging in ([see here for an example](https://www.hugeserver.com/kb/how-secure-kibana-nginx-centos/)) and HTTPS instead of HTTP for the web interface.
