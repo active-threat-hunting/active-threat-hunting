@@ -1,4 +1,4 @@
-name: ssh login failures
+name: ssh invalid authentication code
 type: frequency
 index: filebeat-*
 
