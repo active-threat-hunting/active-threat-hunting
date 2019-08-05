@@ -36,6 +36,7 @@
     state: absent
   with_items:
   - /opt/elastalert/rules/ssh_login_failures.yaml 
+  - /opt/elastalert/rules/ssh_invalid_code.yaml
   - /opt/elastalert/rules/sudo_authentication_failure.yaml 
   - /opt/elastalert/rules/sudo_user_not_in_sudoers.yaml
   when: slack_webhook is defined
@@ -47,6 +48,7 @@
     insertafter: "^alert:"
   with_items:
   - /opt/elastalert/rules/ssh_login_failures.yaml
+  - /opt/elastalert/rules/ssh_invalid_code.yaml
   - /opt/elastalert/rules/sudo_authentication_failure.yaml 
   - /opt/elastalert/rules/sudo_user_not_in_sudoers.yaml
   when: slack_webhook is defined
@@ -58,6 +60,7 @@
     insertafter: "^- slack:"
   with_items:
   - /opt/elastalert/rules/ssh_login_failures.yaml 
+  - /opt/elastalert/rules/ssh_invalid_code.yaml
   - /opt/elastalert/rules/sudo_authentication_failure.yaml 
   - /opt/elastalert/rules/sudo_user_not_in_sudoers.yaml
   when: slack_webhook is defined

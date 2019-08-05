@@ -1,0 +1,15 @@
+name: ssh login failures
+type: frequency
+index: filebeat-*
+
+num_events: 1
+timeframe:
+  minutes: 5
+
+filter:
+- query:
+    query_string: 
+      query: "sshd AND 'Invalid verification code'"
+
+alert:
+- debug
