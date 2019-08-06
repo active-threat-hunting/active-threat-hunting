@@ -51,4 +51,6 @@
     - "{{ logstash_netflow_port }}:{{ logstash_netflow_port }}"
     volumes:
       - /opt/elk-docker/logstash/conf:/usr/share/logstash/pipeline
+    log_options:
+      max-size: "10g"
   become: true

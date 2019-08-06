@@ -60,6 +60,8 @@
     - elk_elasticsearch:elasticsearch
     ports:
     - "{{ kibana_http_port }}:5601"
+    log_options:
+      max-size: "10g"
     env:
       SERVER_NAME: "{{ elk_uri }}"
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
