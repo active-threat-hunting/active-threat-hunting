@@ -23,6 +23,7 @@
     - "{{ elasticsearch_com_port }}:9300"
     volumes:
     - elk_elasticsearch_data:/usr/share/elasticsearch/data
+    log_driver: "syslog"
     log_options:
       max-size: "10g"
     env:

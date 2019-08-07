@@ -60,6 +60,7 @@
     - elk_elasticsearch:elasticsearch
     ports:
     - "{{ kibana_http_port }}:5601"
+    log_driver: "syslog"
     log_options:
       max-size: "10g"
     env:
