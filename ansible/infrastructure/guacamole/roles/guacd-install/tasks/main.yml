@@ -1,0 +1,12 @@
+---
+- name: pull guacd docker image
+  docker_image:
+    name: guacamole/guacd
+    tag: latest
+  become: true
+- name: run guacd container
+  docker_container:
+    name: guacd
+    image: guacamole/guacd:latest 
+    restart_policy: unless-stopped
+  become: true

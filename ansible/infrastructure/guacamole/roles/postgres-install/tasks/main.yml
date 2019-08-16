@@ -1,0 +1,30 @@
+---
+- name: "create {{ user_name }} system user"
+  user:
+    name: "{{ user_name }}"
+    comment: "{{ user_name }} system user"
+    system: true
+    uid: "{{ user_uid }}"
+  become: true
+- name: pull postgres docker image
+  docker_image:
+    name: postgres
+    tag: latest
+  become: true
+- name: create postgres volume
+  docker_volume:
+    name: "{{ postgres_name }}_volume"
+  become: true
+- name: run postgres container
+  docker_container:
+    name: "{{ postgres_name }}"
+    image: postgres:latest
+    restart_policy: unless-stopped
+    user: "{{ user_uid }}"
+    volumes:
+    - "{{ postgres_name }}_volume:/var/lib/postgresql/data"
+    env:
+      POSTGRES_DB: "{{ postgres_db }}"
+      POSTGRES_USER: "{{ postgres_user }}"
+      POSTGRES_PASSWORD: "{{ postgres_password }}"
+  become: true

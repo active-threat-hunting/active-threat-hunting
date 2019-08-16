@@ -1,0 +1,35 @@
+---
+- name: pull guacamole docker image
+  docker_image:
+    name: guacamole/guacamole
+    tag: latest
+  become: true
+- name: prep postgres database
+  docker_container:
+    name: guacamole_prep
+    image: guacamole/guacamole:latest
+    auto_remove: true
+    command: "/opt/guacamole/bin/initdb.sh --postgres > initdb.sql"
+    links:
+    - "{{ postgres_name }}:postgres"
+    - guacd:guacd 
+    env:
+      POSTGRES_DATABASE: "{{ postgres_db }}"
+      POSTGRES_USER: "{{ postgres_user }}"
+      POSTGRES_PASSWORD: "{{ postgres_password }}"
+  become: true
+- name: run guacamole container
+  docker_container:
+    name: guacamole
+    image: guacamole/guacamole:latest
+    restart_policy: unless-stopped
+    links:
+    - "{{ postgres_name }}:postgres"
+    - guacd:guacd 
+    env:
+      POSTGRES_DATABASE: "{{ postgres_db }}"
+      POSTGRES_USER: "{{ postgres_user }}"
+      POSTGRES_PASSWORD: "{{ postgres_password }}"
+    ports:
+      8080:8080
+  become: true
