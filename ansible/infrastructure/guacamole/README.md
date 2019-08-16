@@ -17,5 +17,5 @@ This playbook installs Guacamole in Docker using a self-signed SSL certificate
 
 ### Post-install:
 
-Access the web interface for Guacamole on port 8006 of the remote server.
+Access the web interface for Guacamole on port 9600 of the remote server.
 

@@ -32,5 +32,5 @@
       POSTGRES_USER: "{{ postgres_user }}"
       POSTGRES_PASSWORD: "{{ postgres_password }}"
     ports:
-      8080:8080
+      9600:8080
   become: true
