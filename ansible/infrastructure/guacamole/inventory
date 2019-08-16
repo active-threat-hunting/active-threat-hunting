@@ -7,6 +7,6 @@ guacamole:
     ansible_ssh_private_key_file: /Users/ansible/.ssh/id_rsa
     ansible_python_interpreter: "/usr/bin/env python3"
     postgres_name: "guac_pg"
-    postgres_db: "changeme"
+    postgres_db: "guacamole_db"
     postgres_user: "changeme"
     postgres_password: "changeme"
