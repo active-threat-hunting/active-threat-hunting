@@ -39,3 +39,5 @@ docker exec -it guac_pg psql -U db_username -d guacamole_db -a -f initdb.sql
 
 Access the web interface for Guacamole on port 9600 of the remote server.
 
+Default Username/Password:
+`guacadmin/guacadmin`
