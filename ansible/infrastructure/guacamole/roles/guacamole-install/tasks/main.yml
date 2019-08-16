@@ -3,6 +3,7 @@
   docker_image:
     name: guacamole/guacamole
     tag: latest
+    source: pull
   become: true
 - name: prep postgres database
   docker_container:
