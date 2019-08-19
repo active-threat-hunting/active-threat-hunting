@@ -1,14 +1,14 @@
 ---
 - name: pull osticket docker image
   docker_image:
-    name: osticket/osticket
+    name: campbellsoftwaresolutions/osticket
     tag: latest
     source: pull
   become: true
 - name: run osticket container
   docker_container:
     name: osticket
-    image: osticket/osticket:latest
+    image: campbellsoftwaresolutions/osticket:latest
     restart_policy: unless-stopped
     links:
     - "{{ mysql_name }}:mysql"
