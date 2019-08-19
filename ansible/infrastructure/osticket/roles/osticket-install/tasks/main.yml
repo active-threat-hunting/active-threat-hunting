@@ -1,0 +1,21 @@
+---
+- name: pull osticket docker image
+  docker_image:
+    name: osticket/osticket
+    tag: latest
+    source: pull
+  become: true
+- name: run osticket container
+  docker_container:
+    name: osticket
+    image: osticket/osticket:latest
+    restart_policy: unless-stopped
+    links:
+    - "{{ mysql_name }}:mysql"
+    env:
+      MYSQL_DATABASE: "{{ mysql_db }}"
+      MYSQL_USER: "{{ mysql_user }}"
+      MYSQL_PASSWORD: "{{ mysql_password }}"
+    ports:
+      9700:80
+  become: true

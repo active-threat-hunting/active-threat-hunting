@@ -1,6 +1,6 @@
 ### guacamole ansible playbook
 
-This playbook installs Guacamole in Docker using a self-signed SSL certificate
+This playbook installs Guacamole in Docker
 
 ### Installation:
 
