@@ -19,6 +19,6 @@ This playbook installs OSTicket in Docker.
 
 Access the web interface for OSTicket on port 9700 of the remote server.
 
-Login with default admin user & password:
+Login with default admin user & password at [http://localhost:9700/scp](http://localhost:9700/scp):
     username: ostadmin
     password: Admin1
