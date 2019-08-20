@@ -38,7 +38,7 @@
     user: root
     volumes:
     - /opt/auditbeat-docker/auditbeat.yml:/usr/share/auditbeat/auditbeat.yml:ro
-    - /opt/auditbeat-docker/audit.rules.d:/usr/share/auditbeat/audit.rules.d
+    - /opt/auditbeat-docker/audit.rules.d:/etc/auditbeat/audit.rules.d
     capabilities:
     - AUDIT_CONTROL
     - AUDIT_READ
