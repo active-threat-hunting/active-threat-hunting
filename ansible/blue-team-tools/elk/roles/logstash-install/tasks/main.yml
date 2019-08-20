@@ -51,6 +51,7 @@
     volumes:
     - /opt/elk-docker/logstash/conf:/usr/share/logstash/pipeline
     env:
+      XPACK_MONITORING_ENABLED: "true"
       XPACK_MONITORING_ELASTICSEARCH_HOSTS: "http://elasticsearch:9200" 
       XPACK_MONITORING_ELASTICSEARCH_USERNAME: "elastic"
       XPACK_MONITORING_ELASTICSEARCH_PASSWORD: "{{ xpack_password }}"
