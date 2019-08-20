@@ -50,7 +50,11 @@
     - "{{ logstash_beats_port }}:{{ logstash_beats_port }}"
     - "{{ logstash_netflow_port }}:{{ logstash_netflow_port }}"
     volumes:
-      - /opt/elk-docker/logstash/conf:/usr/share/logstash/pipeline
+    - /opt/elk-docker/logstash/conf:/usr/share/logstash/pipeline
+    env:
+      XPACK_MONITORING_ELASTICSEARCH_HOSTS: "http://elasticsearch:9200" 
+      XPACK_MONITORING_ELASTICSEARCH_USERNAME: "elastic"
+      XPACK_MONITORING_ELASTICSEARCH_PASSWORD: "{{ xpack_password }}"
     log_options:
       max-size: "10g"
   become: true
