@@ -17,7 +17,7 @@
   become: true
 - name: copy auditd rules to /usr/share/auditbeat/audit.rules.d
   copy:
-    src: auditbeat/audit.rules.d
+    src: auditbeat/audit.rules.d/
     dest: /usr/share/auditbeat/audit.rules.d
     mode: 0700
   become: true
