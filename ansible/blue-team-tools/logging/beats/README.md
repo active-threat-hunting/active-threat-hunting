@@ -25,3 +25,8 @@ If installing all of the Beats is not optimal, substitute the `all-beats.yml` pl
 ### Post-install:
 
 Once the beats are running, it would be recommended to [set up the Indices in Elasticsearch and Dashboards in Kibana](https://github.com/heywoodlh/active-threat-hunting/tree/master/ansible/blue-team-tools/logging/beats/elk-setup). 
+
+
+### Acknowledgment: 
+
+The following repository is the source of the auditd rules being used by auditbeat: [https://github.com/bfuzzy/auditd-attack](https://github.com/bfuzzy/auditd-attack). Thanks for sharing those rules.

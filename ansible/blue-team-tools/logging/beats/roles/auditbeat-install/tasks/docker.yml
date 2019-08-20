@@ -16,6 +16,12 @@
     dest: /opt/auditbeat-docker/auditbeat.yml
     mode: 0644
   become: true
+- name: copy auditbeat auditd rules to /opt/auditbeat-docker/audit
+  copy:
+    src: auditbeat/audit.rules.d
+    dest: /opt/auditbeat-docker/audit.rules.d
+    mode: 0644
+  become: true
 - name: replace logstash host config in /opt/auditbeat-docker/auditbeat.yml
   replace:
     path: /opt/auditbeat-docker/auditbeat.yml
@@ -32,6 +38,7 @@
     user: root
     volumes:
     - /opt/auditbeat-docker/auditbeat.yml:/usr/share/auditbeat/auditbeat.yml:ro
+    - /opt/auditbeat-docker/audit.rules.d:/usr/share/auditbeat/audit.rules.d
     capabilities:
     - AUDIT_CONTROL
     - AUDIT_READ

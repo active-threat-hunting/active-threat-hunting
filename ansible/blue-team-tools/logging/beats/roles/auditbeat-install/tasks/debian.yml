@@ -15,6 +15,12 @@
     backup: true
     mode: 0600
   become: true
+- name: copy auditd rules to /usr/share/auditbeat/audit.rules.d
+  copy:
+    src: auditbeat/audit.rules.d
+    dest: /usr/share/auditbeat/audit.rules.d
+    mode: 0700
+  become: true
 - name: replace logstash host config in /etc/auditbeat/auditbeat.yml
   replace:
     path: /etc/auditbeat/auditbeat.yml
