@@ -30,6 +30,7 @@
     name: "{{ packages }}"
   vars:
     packages:
+    - pve-manager
     - proxmox-ve
     - open-iscsi
   become: true
