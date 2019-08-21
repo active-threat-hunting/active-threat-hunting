@@ -28,4 +28,4 @@
   delay: 10
   register: output
 - name: print out url of admin user creation
-  debug: "{{ output }}"
+  debug: "{{ output.stdout }}"
