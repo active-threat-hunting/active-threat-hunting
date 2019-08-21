@@ -12,6 +12,5 @@ passbolt:
     mysql_password: "changeme"
     passbolt_url: "https://192.168.1.5:9800"
     passbolt_admin_email: "user@example.com"
-    passbolt_admin_password: "changeme"
     passbolt_admin_first_name: "blah"
     passbolt_admin_last_name: "blah"
