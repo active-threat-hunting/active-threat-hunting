@@ -1,4 +1,13 @@
 ---
+- name: get hostname of machine
+  shell: cat /etc/hostname
+  register: hostname
+- name: add entry to hosts file
+  lineinfile:
+    path: /etc/hosts
+    line: "127.0.0.1 {{ hostname.stdout_lines }}"
+    after: EOF
+  become: true
 - name: remove proxmox enterprise repo (if present)
   file:
     path: /etc/apt/sources.list.d/pve-enterprise.list
