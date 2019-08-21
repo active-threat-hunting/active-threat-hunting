@@ -1,7 +1,4 @@
 ---
-- name: get hostname of machine
-  shell: cat /etc/hostname
-  register: hostname
 - name: add entry to hosts file
   lineinfile:
     path: /etc/hosts
