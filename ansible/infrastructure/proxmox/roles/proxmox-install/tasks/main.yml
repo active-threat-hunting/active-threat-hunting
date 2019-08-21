@@ -34,6 +34,7 @@
     - proxmox-ve
     - open-iscsi
   become: true
+  ignore_errors: yes
 - name: edit ssh config to allow root login
   command: sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
   become: true
