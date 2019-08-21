@@ -1,4 +1,9 @@
 ---
+- name: remove proxmox enterprise repo (if present)
+  file:
+    path: /etc/apt/sources.list.d/pve-enterprise.list
+    state: absent
+  become: true
 - name: apt update && apt upgrade
   apt:
     update_cache: yes
@@ -28,7 +33,14 @@
     - proxmox-ve
     - open-iscsi
   become: true
+- name: edit ssh config to allow root login
+  command: sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
+  become: true
+- name: remove proxmox enterprise repo
+  file:
+    path: /etc/apt/sources.list.d/pve-enterprise.list
+    state: absent
+  become: true
 - name: reboot proxmox server
   reboot:
   become: true
-
