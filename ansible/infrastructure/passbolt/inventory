@@ -1,0 +1,17 @@
+---
+passbolt:
+  hosts:
+    192.168.1.5:
+  vars:
+    ansible_ssh_user: ansible
+    ansible_ssh_private_key_file: /Users/ansible/.ssh/id_rsa
+    ansible_python_interpreter: "/usr/bin/env python3"
+    mysql_name: "passbolt_mysql"
+    mysql_db: "passbolt_db"
+    mysql_user: "changeme"
+    mysql_password: "changeme"
+    passbolt_url: "https://192.168.1.5:9800"
+    passbolt_admin_email: "user@example.com"
+    passbolt_admin_password: "changeme"
+    passbolt_admin_first_name: "blah"
+    passbolt_admin_last_name: "blah"
