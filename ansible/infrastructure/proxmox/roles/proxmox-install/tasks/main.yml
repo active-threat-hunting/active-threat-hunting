@@ -6,7 +6,7 @@
   lineinfile:
     path: /etc/hosts
     line: "127.0.0.1 {{ hostname.stdout_lines }}"
-    after: EOF
+    insertafter: EOF
   become: true
 - name: remove proxmox enterprise repo (if present)
   file:
