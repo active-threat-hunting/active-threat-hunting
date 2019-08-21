@@ -2,13 +2,13 @@
 - name: pull passbolt docker image
   docker_image:
     name: passbolt/passbolt
-    tag: develop-debian
+    tag: latest-debian
     source: pull
   become: true
 - name: run passbolt container
   docker_container:
     name: passbolt
-    image: passbolt/passbolt:develop-debian
+    image: passbolt/passbolt:latest-debian
     restart_policy: unless-stopped
     links:
     - "{{ mysql_name }}:mysql"
