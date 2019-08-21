@@ -5,7 +5,7 @@
 - name: add entry to hosts file
   lineinfile:
     path: /etc/hosts
-    line: "127.0.0.1 {{ hostname.stdout }}"
+    line: "127.0.0.1 {{ hostname.stdout[0] }}"
     insertafter: EOF
   become: true
 - name: remove proxmox enterprise repo (if present)
