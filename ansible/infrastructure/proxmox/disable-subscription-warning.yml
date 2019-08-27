@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: modify proxmox license file to remove subscription
+    command: sed -i.bak "s/data.status !== 'Active'/false/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+  - name: restart proxmox proxy service
+    systemd:
+      name: pveproxy.service
+      state: restarted
