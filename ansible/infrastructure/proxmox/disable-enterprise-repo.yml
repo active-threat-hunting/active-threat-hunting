@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+  - name: disable proxmox enterprise repo 
+    apt_repository:
+      repo: deb https://enterprise.proxmox.com/debian/pve buster pve-enterprise
+      state: absent
+    become: true
