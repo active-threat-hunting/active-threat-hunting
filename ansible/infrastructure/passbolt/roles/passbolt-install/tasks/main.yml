@@ -25,7 +25,7 @@
   pause:
    seconds: 45
 - name: create admin user
-  shell: "docker exec passbolt su -m -c \"/var/www/passbolt/bin/cake passbolt register_user -u {{ passbolt_admin_email }} -f {{ passbolt_admin_first_name }} -l {{ passbolt_admin_last_name }} -r admin\" -s /bin/sh www-data"
+  command: "docker exec passbolt su -m -c \"/var/www/passbolt/bin/cake passbolt register_user -u {{ passbolt_admin_email }} -f {{ passbolt_admin_first_name }} -l {{ passbolt_admin_last_name }} -r admin\" -s /bin/sh www-data"
   become: true
   retries: 6
   delay: 10
