@@ -19,7 +19,7 @@
       DATASOURCES_DEFAULT_USERNAME: "{{ mysql_user }}"
       DATASOURCES_DEFAULT_PASSWORD: "{{ mysql_password }}"
     ports:
-      9800:80
+      9800:443
   become: true
 - name: give mariadb chance to start
   pause:
