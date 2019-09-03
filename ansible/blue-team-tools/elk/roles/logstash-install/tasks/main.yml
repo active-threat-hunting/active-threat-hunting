@@ -8,7 +8,7 @@
 - name: create /opt/elk-docker/logstash/conf
   file:
     path: /opt/elk-docker/logstash/conf/
-    mode: 0700
+    mode: 0744
     owner: "{{ elk_system_user }}"
     state: directory
   become: true
@@ -16,7 +16,7 @@
   copy:
     src: logstash/
     dest: /opt/elk-docker/logstash/conf
-    mode: 0700
+    mode: 0744
     owner: "{{ elk_system_user_uid }}"
   become: true
 - name: "replace logstash elasticsearch username in {{ item }}"
