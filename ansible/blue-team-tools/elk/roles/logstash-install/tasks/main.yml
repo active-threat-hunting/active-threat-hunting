@@ -42,7 +42,7 @@
     name: elk_logstash
     image: "docker.elastic.co/logstash/logstash:{{ elk_version_tag }}"
     restart_policy: unless-stopped
-    user: "{{ elk_system_user_uid }}"
+    user: root
     links:
     - elk_elasticsearch:elasticsearch
     ports:
