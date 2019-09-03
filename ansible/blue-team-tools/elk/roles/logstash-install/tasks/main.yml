@@ -1,7 +1,7 @@
 ---
 - name: pull logstash docker image
   docker_image:
-    name: logstash
+    name: docker.elastic.co/logstash/logstash
     source: pull
     tag: "{{ elk_version_tag }}"
   become: true
@@ -40,7 +40,7 @@
 - name: run logstash docker container
   docker_container:
     name: elk_logstash
-    image: "logstash:{{ elk_version_tag }}"
+    image: "docker.elastic.co/logstash/logstash:{{ elk_version_tag }}"
     restart_policy: unless-stopped
     links:
     - elk_elasticsearch:elasticsearch
