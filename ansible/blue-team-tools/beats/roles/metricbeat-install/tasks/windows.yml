@@ -11,10 +11,10 @@
     backup: yes
   become: true
 - name: replace logstash host config in 'C:\ProgramData\chocolatey\lib\metricbeat\tools\metricbeat.yml'
-  replace:
+  win_lineinfile:
     path: "C:\\ProgramData\\chocolatey\\lib\\metricbeat\\tools\\metricbeat.yml"
     regexp: 'hosts: \["mylogstash_host:5044"\]'
-    replace: 'hosts: ["{{ beats_server }}"]'
+    line: 'hosts: ["{{ beats_server }}"]'
     backup: true
   become: true
 - name: start and enable metricbeat service
