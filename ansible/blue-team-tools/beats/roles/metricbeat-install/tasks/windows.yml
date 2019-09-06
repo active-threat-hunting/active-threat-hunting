@@ -23,3 +23,4 @@
     start_mode: auto
     state: started
   become: true
+  ignore_errors: yes
