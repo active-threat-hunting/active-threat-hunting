@@ -4,4 +4,4 @@
   when: ansible_os_family == 'Debian'
 - name: include docker.yml
   include_tasks: docker.yml
-  when: ansible_os_family != 'Debian'
+  when: ansible_os_family != 'Debian' and ansible_os_family != 'Windows'
