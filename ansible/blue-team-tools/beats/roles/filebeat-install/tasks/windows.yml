@@ -10,7 +10,7 @@
     dest: "C:\\ProgramData\\chocolatey\\lib\\winlogbeat\\tools\\winlogbeat.yml"
     backup: yes
   become: true
-- name: replace logstash host config in /opt/winlogbeat-docker/winlogbeat.yml
+- name: replace logstash host config in 'C:\ProgramData\chocolatey\lib\winlogbeat\tools\winlogbeat.yml'
   replace:
     path: "C:\\ProgramData\\chocolatey\\lib\\winlogbeat\\tools\\winlogbeat.yml"
     regexp: 'hosts: \["mylogstash_host:5044"\]'

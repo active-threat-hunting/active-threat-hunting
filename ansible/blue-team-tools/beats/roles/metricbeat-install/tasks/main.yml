@@ -2,6 +2,9 @@
 - name: include debian.yml
   include_tasks: debian.yml
   when: ansible_os_family == 'Debian'
+- name: include windows.yml
+  include_tasks: windows.yml
+  when: ansible_os_family == 'Windows'
 - name: include docker.yml
   include_tasks: docker.yml
-  when: ansible_os_family != 'Debian'
+  when: ansible_os_family != 'Debian' and ansible_os_family != 'Windows'
