@@ -1,0 +1,30 @@
+---
+- name: install winpcap
+  win_chocolatey:
+    name: winpcap
+    force: yes
+  become: true
+- name: install packetbeat
+  win_chocolatey:
+    name: packetbeat
+    version: "{{ beats_version_tag }}"
+  become: true
+- name: copy packetbeat.yml to 'C:\ProgramData\chocolatey\lib\packetbeat\tools\packetbeat.yml'
+  win_copy:
+    src: packetbeat.yml
+    dest: "C:\\ProgramData\\chocolatey\\lib\\packetbeat\\tools\\packetbeat.yml"
+    backup: yes
+  become: true
+- name: replace logstash host config in 'C:\ProgramData\chocolatey\lib\metricbeat\tools\metricbeat.yml'
+  replace:
+    path: "C:\\ProgramData\\chocolatey\\lib\\packetbeat\\tools\\packetbeat.yml"
+    regexp: 'hosts: \["mylogstash_host:5044"\]'
+    replace: 'hosts: ["{{ beats_server }}"]'
+    backup: true
+  become: true
+- name: start and enable packetbeat service
+  win_service:
+    name: packetbeat
+    start_mode: auto
+    state: started
+  become: true
