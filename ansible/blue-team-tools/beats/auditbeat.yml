@@ -9,9 +9,9 @@
   tasks:
   - import_role: 
       name: geerlingguy.pip
-    when: ansible_os_family != "Debian"
+    when: ansible_os_family != "Debian" and ansible_os_family != 'Windows'
   - import_role: 
       name: geerlingguy.docker
-    when: ansible_os_family != "Debian"
+    when: ansible_os_family != "Debian" and ansible_os_family != 'Windows'
   roles:
   - { role: auditbeat-install }
