@@ -14,7 +14,7 @@
   win_lineinfile:
     path: "C:\\ProgramData\\chocolatey\\lib\\metricbeat\\tools\\metricbeat.yml"
     regexp: 'hosts: \["mylogstash_host:5044"\]'
-    line: 'hosts: ["{{ beats_server }}"]'
+    line: '  hosts: ["{{ beats_server }}"]'
     backup: true
   become: true
 - name: start and enable metricbeat service
