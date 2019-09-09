@@ -1,0 +1,26 @@
+---
+- name: install metricbeat
+  win_chocolatey:
+    name: metricbeat
+    version: "{{ beats_version_tag }}"
+  become: true
+- name: copy metricbeat.yml to 'C:\ProgramData\chocolatey\lib\metricbeat\tools\metricbeat.yml'
+  win_copy:
+    src: metricbeat.yml
+    dest: "C:\\ProgramData\\chocolatey\\lib\\metricbeat\\tools\\metricbeat.yml"
+    backup: yes
+  become: true
+- name: replace logstash host config in 'C:\ProgramData\chocolatey\lib\metricbeat\tools\metricbeat.yml'
+  win_lineinfile:
+    path: "C:\\ProgramData\\chocolatey\\lib\\metricbeat\\tools\\metricbeat.yml"
+    regexp: 'hosts: \["mylogstash_host:5044"\]'
+    line: '  hosts: ["{{ beats_server }}"]'
+    backup: true
+  become: true
+- name: start and enable metricbeat service
+  win_service:
+    name: metricbeat
+    start_mode: auto
+    state: started
+  become: true
+  ignore_errors: yes
