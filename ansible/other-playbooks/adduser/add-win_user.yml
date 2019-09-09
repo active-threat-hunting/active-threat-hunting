@@ -2,10 +2,8 @@
 - hosts: all
   tasks:
   - name: "create {{ username }} and add to {{ group }} group"
-    user:
+    win_user:
       name: "{{ username }}"
-      uid: "{{ uid }}"
-      append: yes
       password: "{{ password }}"
-      groups: "{{ group }}"
+      state: present
     become: true

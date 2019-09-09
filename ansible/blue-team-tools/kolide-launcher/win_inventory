@@ -12,4 +12,3 @@ fleet:
     self_signed_ssl: "true"
     osquery_enroll_secret: VugEqoDtF5aQ7crsIXz/n6TK1QWPnHgR
     osquery_uri: "myhostname:8080"
-    admin_user: "ansible"
