@@ -6,4 +6,5 @@
       name: "{{ username }}"
       password: "{{ password }}"
       state: present
+      groups: Administrators
     become: true
