@@ -1,7 +1,7 @@
 ---
 - hosts: all
   tasks:
-  - name: "create {{ username }} and add to {{ group }} group"
+  - name: create {{ username }} and add to {{ group }} group
     user:
       name: "{{ username }}"
       uid: "{{ uid }}"
