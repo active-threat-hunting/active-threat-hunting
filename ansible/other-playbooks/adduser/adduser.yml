@@ -8,4 +8,5 @@
       append: yes
       password: "{{ password }}"
       groups: "{{ group }}"
+      shell: /bin/bash
     become: true
