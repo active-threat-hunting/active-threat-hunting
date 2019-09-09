@@ -1,0 +1,10 @@
+---
+- hosts: all
+  tasks:
+  - name: "create {{ username }} and add to {{ group }} group"
+    user:
+      name: "{{ username }}"
+      uid: "{{ uid }}"
+      append: yes
+      groups: "{{ group }}"
+    become: true
