@@ -47,5 +47,3 @@
       name: launcher
       state: started
   become: true
-  become_method: runas
-  become_user: "{{ admin_user }}"
