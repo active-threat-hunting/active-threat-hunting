@@ -31,7 +31,7 @@
 - name: replace DATABASE_URL
   replace: 
     path: /opt/ctfd/docker-compose.yml
-    regexp: '- DATABASE_URL=mysql+pymysql://root:ctfd@db/ctfd'
+    regexp: '- DATABASE_URL=mysql\+pymysql://root:ctfd@db/ctfd'
     replace: "- DATABASE_URL=mysql+pymysql://root:{{ mysql_root_password }}@db/{{ mysql_database }}"
   become: true
 - name: docker-compose build && docker-compose up in /opt/ctfd
