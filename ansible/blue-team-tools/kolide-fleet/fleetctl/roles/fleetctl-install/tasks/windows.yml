@@ -1,0 +1,21 @@
+---
+- name: install fleet on windows
+  block: 
+  - name: copy fleet.zip to C:\Windows\Temp
+    win_copy:
+      src: fleet.zip
+      dest: C:\Windows\Temp\fleet.zip
+  - name: unzip fleet.zip
+    win_unzip:
+      src: C:\Windows\Temp\fleet.zip
+      dest: C:\Windows\Temp\
+  - name: create directory for fleet
+    win_file:
+      path: C:\ProgramData\fleet\
+      state: directory
+  - name: cp fleetctl.exe to C:\ProgramData\fleet\fleetctl.exe
+    win_copy:
+      remote_src: true
+      src: C:\Windows\Temp\windows\fleetctl.exe
+      dest: C:\ProgramData\fleet\fleetctl.exe
+  become: true

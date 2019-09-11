@@ -1,0 +1,9 @@
+---
+- name: install pscx module
+  win_psmodule:
+    name: Pscx
+    state: present
+  ignore_errors: true
+  become_method: runas
+  become_user: Administrator
+  become: true

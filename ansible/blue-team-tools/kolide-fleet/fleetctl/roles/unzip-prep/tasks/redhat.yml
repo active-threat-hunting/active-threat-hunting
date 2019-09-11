@@ -1,0 +1,11 @@
+---
+- name: include linux vars
+  include_vars:
+    file: linux.yml
+- name: install unzip package
+  yum:
+    name: unzip
+    state: present
+  tags:
+  - unzip
+  become: true

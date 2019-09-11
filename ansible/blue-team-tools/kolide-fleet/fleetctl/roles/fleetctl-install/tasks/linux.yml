@@ -1,0 +1,12 @@
+---
+- name: unzip fleet.zip
+  unarchive:
+    src: fleet.zip
+    dest: /tmp
+- name: cp fleetctl to /usr/local/bin/fleetctl
+  copy:
+    remote_src: true
+    src: /tmp/linux/fleetctl
+    dest: /usr/local/bin/fleetctl
+    mode: 0755 
+  become: true 
