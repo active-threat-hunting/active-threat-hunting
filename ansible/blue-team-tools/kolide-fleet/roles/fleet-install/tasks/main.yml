@@ -159,7 +159,10 @@
       KOLIDE_SERVER_CERT: /etc/kolide/server.cert
       KOLIDE_SERVER_KEY: /etc/kolide/server.key
       KOLIDE_AUTH_JWT_KEY: "{{ jwt_key }}"
+      KOLIDE_OSQUERY_RESULT_LOG_FILE: /tmp/logs/result.log
+      KOLIDE_OSQUERY_STATUS_LOG_FILE: /tmp/logs/status.log
       KOLIDE_FILESYSTEM_ENABLE_LOG_ROTATION: "true"
     volumes:
     - /opt/fleet-docker:/etc/kolide/
+    - /opt/fleet-docker/logs:/tmp/logs 
   become: true
