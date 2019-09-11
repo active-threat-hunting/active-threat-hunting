@@ -1,0 +1,41 @@
+---
+- name: git clone https://github.com/khast3x/Redcloud.git /opt/redcloud
+  git:
+    repo: https://github.com/CTFd/CTFd.git
+    dest: /opt/ctfd
+  become: true
+- name: replace MYSQL_ROOT_PASSWORD
+  replace: 
+    path: /opt/ctfd/docker-compose.yml
+    regexp: '- MYSQL_ROOT_PASSWORD=ctfd'
+    replace: "- MYSQL_ROOT_PASSWORD={{ mysql_root_password }}"
+  become: true
+- name: replace MYSQL_USER
+  replace: 
+    path: /opt/ctfd/docker-compose.yml
+    regexp: '- MYSQL_USER=ctfd'
+    replace: "- MYSQL_USER={{ mysql_user }}"
+  become: true
+- name: replace MYSQL_PASSWORD
+  replace: 
+    path: /opt/ctfd/docker-compose.yml
+    regexp: '- MYSQL_PASSWORD=ctfd'
+    replace: "- MYSQL_PASSWORD={{ mysql_password }}"
+  become: true
+- name: replace MYSQL_DATABASE
+  replace: 
+    path: /opt/ctfd/docker-compose.yml
+    regexp: '- MYSQL_DATABASE=ctfd'
+    replace: "- MYSQL_DATABASE={{ mysql_database }}"
+  become: true
+- name: replace DATABASE_URL
+  replace: 
+    path: /opt/ctfd/docker-compose.yml
+    regexp: '- DATABASE_URL=mysql+pymysql://root:ctfd@db/ctfd'
+    replace: "- DATABASE_URL=mysql+pymysql://root:{{ mysql_root_password }}@db/{{ mysql_database }}"
+  become: true
+- name: docker-compose build && docker-compose up in /opt/redcloud
+  docker_compose:
+    build: yes
+    project_src: /opt/ctfd/ 
+  become: true
