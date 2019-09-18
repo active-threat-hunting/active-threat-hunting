@@ -1,0 +1,14 @@
+---
+- name: install phpmyadmin docker
+  docker_container:
+    name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    state: started
+    restart_policy: unless-stopped
+    links: "{{ mysql_name }}:db"
+    ports: 9090:80
+    env:
+      PMA_HOST: db
+      PMA_USER: "{{ mysql_user }}"
+      PMA_PASSWORD: "{{ mysql_password }}"
+  become: true

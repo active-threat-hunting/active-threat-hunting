@@ -1,0 +1,50 @@
+---
+- name: create wordpress-docker directory
+  file: 
+    path: /opt/wordpress-docker 
+    state: directory
+    mode: 0770
+    owner: "{{ wordpress_user }}"
+    group: "{{ wordpress_user }}"
+  become: true
+- name: copy php custom ini file to host
+  copy:
+    src: custom.ini
+    dest: /opt/wordpress-docker/custom.ini
+    mode: 0660
+    owner: "{{ wordpress_user }}"
+    group: "{{ wordpress_user }}"
+  become: true
+- name: create wordpress root directory volume
+  file: 
+    path: /opt/wordpress-docker/root_html 
+    state: directory
+    mode: 0770
+    owner: "{{ wordpress_user }}"
+    group: "{{ wordpress_user }}"
+  become: true
+- name: install wordpress docker
+  docker_container:
+    name: "{{ wordpress_name }}"
+    image: wordpress
+    state: started
+    restart_policy: unless-stopped
+    user: "{{ wordpress_user_uid }}"
+    #log_driver: json
+    #    log_options:
+    #        syslog-address: udp://testhost:5044
+    #  syslog-facility: daemon
+    #  tag: wordpress
+    links:
+    - "{{ mysql_name }}:mysql"
+    ports:
+    - "{{ wordpress_port }}:80"
+    env:
+      WORDPRESS_DB_HOST: "mysql"
+      WORDPRESS_DB_NAME: "{{ mysql_db }}"
+      WORDPRESS_DB_USER: "{{ mysql_user }}"
+      WORDPRESS_DB_PASSWORD: "{{ mysql_password }}" 
+    volumes:
+    - /opt/wordpress-docker/root_html:/var/www/html
+    - /opt/wordpress-docker/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+  become: true

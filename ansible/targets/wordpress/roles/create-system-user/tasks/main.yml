@@ -1,0 +1,8 @@
+---
+- name: create "{{ wordpress_user }}" system user
+  user:
+    name: "{{ wordpress_user }}"
+    comment: 'wordpress system user'
+    system: true
+    uid: "{{ wordpress_user_uid }}"
+  become: true

@@ -1,0 +1,24 @@
+---
+- name: pull mariadb docker image
+  docker_image:
+    name: mariadb
+    tag: latest
+    source: pull
+  become: true
+- name: create mariadb volume
+  docker_volume:
+    name: "{{ mysql_name }}_volume"
+  become: true
+- name: run mariadb container
+  docker_container:
+    name: "{{ mysql_name }}"
+    image: mariadb:latest
+    restart_policy: unless-stopped
+    volumes:
+    - "{{ mysql_name }}_volume:/var/lib/mysql"
+    env:
+      MYSQL_DATABASE: "{{ mysql_db }}"
+      MYSQL_USER: "{{ mysql_user }}"
+      MYSQL_PASSWORD: "{{ mysql_password }}"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+  become: true
