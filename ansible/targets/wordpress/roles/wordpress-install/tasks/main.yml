@@ -1,27 +1,7 @@
 ---
-- name: create wordpress-docker directory
-  file: 
-    path: /opt/wordpress-docker 
-    state: directory
-    mode: 0770
-    owner: "{{ wordpress_user }}"
-    group: "{{ wordpress_user }}"
-  become: true
-- name: copy php custom ini file to host
-  copy:
-    src: custom.ini
-    dest: /opt/wordpress-docker/custom.ini
-    mode: 0660
-    owner: "{{ wordpress_user }}"
-    group: "{{ wordpress_user }}"
-  become: true
-- name: create wordpress root directory volume
-  file: 
-    path: /opt/wordpress-docker/root_html 
-    state: directory
-    mode: 0770
-    owner: "{{ wordpress_user }}"
-    group: "{{ wordpress_user }}"
+- name: create wordpress volume
+  docker_volume:
+    name: "{{ wordpress_name }}_volume"
   become: true
 - name: install wordpress docker
   docker_container:
@@ -45,5 +25,4 @@
       WORDPRESS_DB_PASSWORD: "{{ mysql_password }}" 
     volumes:
     - /opt/wordpress-docker/root_html:/var/www/html
-    - /opt/wordpress-docker/custom.ini:/usr/local/etc/php/conf.d/custom.ini
   become: true
