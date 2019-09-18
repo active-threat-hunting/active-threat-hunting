@@ -29,7 +29,6 @@
     image: wordpress
     state: started
     restart_policy: unless-stopped
-    user: "{{ wordpress_user_uid }}"
     #log_driver: json
     #    log_options:
     #        syslog-address: udp://testhost:5044
