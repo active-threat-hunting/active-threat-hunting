@@ -42,6 +42,11 @@
     path: /etc/systemd/system/launcher.service
     regexp: '--enroll_secret=\$FleetSecret'
     replace: "--enroll_secret={{ osquery_enroll_secret }}"
+  become: true
+- name: create /var/launcher
+  file:
+    state: directory
+    path: /var/launcher
   become: true 
 - name: if self-signed SSL being used, then have launcher use --insecure flag
   replace:

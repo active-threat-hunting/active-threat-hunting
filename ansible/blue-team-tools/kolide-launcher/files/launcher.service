@@ -8,6 +8,7 @@ ExecStart= /usr/local/bin/launcher \
   --hostname=$FleetServer:FleetPort \
   --enroll_secret=$FleetSecret \
   --autoupdate \
+  --root_directory=/var/launcher \
   --osqueryd_path=/usr/local/bin/osqueryd #--insecure
 Restart=on-failure
 RestartSec=3
