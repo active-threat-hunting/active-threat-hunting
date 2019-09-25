@@ -7,7 +7,6 @@
     pip_install_packages:
     - name: docker
   roles:
-  - {role: create-system-user}
   - {role: mysql-install}
   - {role: phpmyadmin-install}
   - {role: wordpress-install}
