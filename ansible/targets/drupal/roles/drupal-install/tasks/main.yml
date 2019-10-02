@@ -12,6 +12,14 @@
 - name: preseed drupal sites directory
   shell: "docker run --rm drupal:{{ drupal_tag }} tar -cC /var/www/html/sites . | tar -xC /opt/{{ drupal_name }}/sites"
   become: true
+- name: create drupal modules directory
+  file:
+    path: "/opt/{{ drupal_name }}/modules"
+    state: directory
+  become: true
+- name: preseed drupal modules directory
+  shell: "docker run --rm drupal:{{ drupal_tag }} tar -cC /var/www/html/modules . | tar -xC /opt/{{ drupal_name }}/modules"
+  become: true
 - name: install drupal docker
   docker_container:
     name: "{{ drupal_name }}"
