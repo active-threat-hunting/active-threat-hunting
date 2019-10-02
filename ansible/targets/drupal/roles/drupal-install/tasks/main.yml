@@ -27,7 +27,7 @@
     - "{{ mysql_name }}:mysql"
     ports:
     - "{{ drupal_port }}:80"
-    environment:
+    env:
       MYSQL_USER: "{{ mysql_user }}"
       MYSQL_PASSWORD: "{{ mysql_password }}" 
     volumes:
