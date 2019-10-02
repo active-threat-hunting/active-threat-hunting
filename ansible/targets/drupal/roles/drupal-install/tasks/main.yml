@@ -7,7 +7,7 @@
 - name: install drupal docker
   docker_container:
     name: "{{ drupal_name }}"
-    image: drupal
+    image: "drupal:{{ drupal_tag }}"
     state: started
     restart_policy: unless-stopped
     #log_driver: json
