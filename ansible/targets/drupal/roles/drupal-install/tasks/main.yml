@@ -1,0 +1,23 @@
+---
+- name: create drupal volume
+  docker_volume:
+    name: "{{ drupal_name }}_volume"
+  become: true
+- name: install drupal docker
+  docker_container:
+    name: "{{ drupal_name }}"
+    image: drupal
+    state: started
+    restart_policy: unless-stopped
+    #log_driver: json
+    #    log_options:
+    #        syslog-address: udp://testhost:5044
+    #  syslog-facility: daemon
+    #  tag: drupal
+    links:
+    - "{{ mysql_name }}:mysql"
+    ports:
+    - "{{ drupal_port }}:80"
+    volumes:
+    - "{{ drupal_name }}_volume:/var/www/html"
+  become: true
