@@ -12,13 +12,8 @@
 - name: preseed drupal sites directory
   shell: "docker run --rm drupal:{{ drupal_tag }} tar -cC /var/www/html/sites . | tar -xC /opt/{{ drupal_name }}/sites"
   become: true
-- name: create drupal modules directory
-  file:
-    path: "/opt/{{ drupal_name }}/modules"
-    state: directory
-  become: true
-- name: preseed drupal modules directory
-  shell: "docker run --rm drupal:{{ drupal_tag }} tar -cC /var/www/html/modules . | tar -xC /opt/{{ drupal_name }}/modules"
+- name: preseed drupal root directory
+  shell: "docker run --rm drupal:{{ drupal_tag }} tar -cC /var/www/html/ . | tar -xC /opt/{{ drupal_name }}/"
   become: true
 - name: install drupal docker
   docker_container:
@@ -39,8 +34,5 @@
       MYSQL_USER: "{{ mysql_user }}"
       MYSQL_PASSWORD: "{{ mysql_password }}" 
     volumes:
-    - "/opt/{{ drupal_name }}/modules:/var/www/html/modules"
-    - "/opt/{{ drupal_name }}/profiles:/var/www/html/profiles"
-    - "/opt/{{ drupal_name }}/sites:/var/www/html/sites"
-    - "/opt/{{ drupal_name }}/themes:/var/www/html/themes"
+    - "/opt/{{ drupal_name }}/:/var/www/html/"
   become: true
