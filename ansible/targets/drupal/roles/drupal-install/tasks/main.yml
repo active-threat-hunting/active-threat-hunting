@@ -4,6 +4,14 @@
     path: "/opt/{{ drupal_name }}"
     state: directory
   become: true
+- name: create drupal sites directory
+  file:
+    path: "/opt/{{ drupal_name }}/sites"
+    state: directory
+  become: true
+- name: preseed drupal sites directory
+  command: "docker run --rm drupal:{{ drupal_tag }} tar -cC /var/www/html/sites . | tar -xC /opt/{{ drupal_name }}/sites"
+  become: true
 - name: install drupal docker
   docker_container:
     name: "{{ drupal_name }}"
