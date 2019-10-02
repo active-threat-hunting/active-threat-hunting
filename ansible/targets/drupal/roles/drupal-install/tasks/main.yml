@@ -1,7 +1,8 @@
 ---
-- name: create drupal volume
-  docker_volume:
-    name: "{{ drupal_name }}_volume"
+- name: create drupal directory
+  file:
+    path: "/opt/{{ drupal_name }}"
+    state: directory
   become: true
 - name: install drupal docker
   docker_container:
@@ -19,5 +20,5 @@
     ports:
     - "{{ drupal_port }}:80"
     volumes:
-    - "{{ drupal_name }}_volume:/var/www/html"
+    - "/opt/{{ drupal_name }}/root_html:/var/www/html"
   become: true

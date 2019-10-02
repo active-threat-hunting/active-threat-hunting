@@ -1,7 +1,8 @@
 ---
-- name: create wordpress volume
-  docker_volume:
-    name: "{{ wordpress_name }}_volume"
+- name: create wordpress directory
+  file:
+    path: "/opt/{{ wordpress_name }}"
+    state: directory
   become: true
 - name: install wordpress docker
   docker_container:
@@ -24,5 +25,5 @@
       WORDPRESS_DB_USER: "{{ mysql_user }}"
       WORDPRESS_DB_PASSWORD: "{{ mysql_password }}" 
     volumes:
-    - /opt/wordpress-docker/root_html:/var/www/html
+    - "/opt/{{ wordpress_name }}/root_html:/var/www/html"
   become: true
