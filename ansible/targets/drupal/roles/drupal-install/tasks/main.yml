@@ -20,5 +20,8 @@
     ports:
     - "{{ drupal_port }}:80"
     volumes:
-    - "/opt/{{ drupal_name }}/root_html:/var/www/html"
+    - "/opt/{{ drupal_name }}/modules:/var/www/html/modules"
+    - "/opt/{{ drupal_name }}/profiles:/var/www/html/profiles"
+    - "/opt/{{ drupal_name }}/sites:/var/www/html/sites"
+    - "/opt/{{ drupal_name }}/themes:/var/www/html/themes"
   become: true
