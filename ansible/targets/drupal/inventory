@@ -9,7 +9,6 @@ drupal:
     drupal_name: "test_drupal"
     drupal_tag: "7.56"
     drupal_port: "8090"
-    drupal_user_uid: "3450"
     mysql_name: "{{ drupal_name }}_mysql"
     mysql_db: "changeme"
     mysql_user: "changeme"
