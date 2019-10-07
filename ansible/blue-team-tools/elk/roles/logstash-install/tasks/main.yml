@@ -22,7 +22,7 @@
 - name: copy logstash grok patterns to /opt/elk-docker/logstash/patterns
   copy:
     src: logstash/patterns
-    dest: /opt/elk-docker/logstash/patterns
+    dest: /opt/elk-docker/logstash/
     mode: 0744
     owner: "{{ elk_system_user_uid }}"
   become: true
