@@ -11,10 +11,10 @@ services:
      - JOOMLA_DB_PASSWORD=JOOMLA_DB_PASSWORD
     volumes:
      - ./root_html:/var/www/html
-    logging: 
-      driver: "syslog"
-      options:
-        syslog-address: "udp://SYSLOG_SERVER"
+    #logging: 
+      #driver: "syslog"
+      #options:
+        #syslog-address: "udp://SYSLOG_SERVER"
 
   mysql:
     image: mysql:latest
