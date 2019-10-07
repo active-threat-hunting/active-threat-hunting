@@ -14,4 +14,4 @@ joomla:
     mysql_user: "changeme"
     mysql_password: "changeme"
     mysql_root_password: "changeme"
-    syslog_server: "udp://syslog_server:514"
+    #syslog_server: "udp://syslog_server:514"
