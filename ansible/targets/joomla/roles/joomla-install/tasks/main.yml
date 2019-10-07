@@ -23,7 +23,7 @@
   become: true
 #- name: edit /opt/joomla/docker-compose.yml config
   #replace:
-    #path: /opt/joomla/
+    #path: /opt/joomla/docker-compose.yml
     #regexp: 'udp://SYSLOG_SERVER'
     #replace: "{{ syslog_server }}"
   #become: true
