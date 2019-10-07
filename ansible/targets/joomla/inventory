@@ -8,8 +8,6 @@ joomla:
     ansible_python_interpreter: "/usr/bin/env python3"
     joomla_tag: "3.7.0-apache"
     phpmyadmin_tag: "4.8.1"
-    mysql_db: "changeme"
-    mysql_user: "changeme"
     mysql_password: "changeme"
     mysql_root_password: "changeme"
     #syslog_server: "udp://syslog_server:514"
