@@ -1,0 +1,57 @@
+---
+- name: mkdir -p /opt/joomla/
+  file:
+    path: /opt/joomla/
+    state: directory
+  become: true
+- name: copy docker-compose.yml to /opt/joomla/docker-compose.yml
+  copy:
+    src: docker-compose.yml
+    dest: /opt/joomla/docker-compose.yml
+  become: true
+- name: edit /opt/joomla/docker-compose.yml config
+  replace:
+    path: /opt/joomla/
+    regexp: 'joomla:JOOMLA_TAG'
+    replace: "joomla:{{ joomla_tag }}"
+  become: true
+- name: edit /opt/joomla/docker-compose.yml config
+  replace:
+    path: /opt/joomla/
+    regexp: 'JOOMLA_DB_PASSWORD=JOOMLA_DB_PASSWORD'
+    replace: "JOOMLA_DB_PASSWORD={{ mysql_password }}"
+  become: true
+#- name: edit /opt/joomla/docker-compose.yml config
+  #replace:
+    #path: /opt/joomla/
+    #regexp: 'udp://SYSLOG_SERVER'
+    #replace: "{{ syslog_server }}"
+  #become: true
+- name: edit /opt/joomla/docker-compose.yml config
+  replace:
+    path: /opt/joomla/
+    regexp: 'MYSQL_PASSWORD=JOOMLA_DB_PASSWORD'
+    replace: "MYSQL_PASSWORD={{ mysql_password }}"
+  become: true
+- name: edit /opt/joomla/docker-compose.yml config
+  replace:
+    path: /opt/joomla/
+    regexp: 'MYSQL_ROOT_PASSWORD=MYSQL_ROOT_PASSWORD'
+    replace: "MYSQL_ROOT_PASSWORD={{ mysql_root_password }}"
+  become: true
+- name: edit /opt/joomla/docker-compose.yml config
+  replace:
+    path: /opt/joomla/
+    regexp: 'phpmyadmin/phpmyadmin:PHPMYADMIN_TAG'
+    replace: "phpmyadmin/phpmyadmin:{{ phpmyadmin_tag }}"
+  become: true
+- name: docker-compose build && docker-compose up in /opt/joomla
+  docker_compose:
+    build: yes
+    project_src: /opt/joomla/ 
+  become: true
+- name: remove /opt/joomla/docker-compose.yml
+  file:
+    path: /opt/joomla/docker-compose.yml
+    state: absent
+  become: true
