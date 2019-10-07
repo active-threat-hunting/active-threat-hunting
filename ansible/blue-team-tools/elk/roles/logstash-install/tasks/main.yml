@@ -19,6 +19,13 @@
     mode: 0744
     owner: "{{ elk_system_user_uid }}"
   become: true
+- name: copy logstash grok patterns to /opt/elk-docker/logstash/patterns
+  copy:
+    src: logstash/patterns
+    dest: /opt/elk-docker/logstash/patterns
+    mode: 0744
+    owner: "{{ elk_system_user_uid }}"
+  become: true
 - name: "replace logstash elasticsearch username in {{ item }}"
   replace:
     path: "{{ item }}"
@@ -51,6 +58,7 @@
     - "{{ logstash_netflow_port }}:{{ logstash_netflow_port }}"
     volumes:
     - /opt/elk-docker/logstash/conf:/usr/share/logstash/pipeline
+    - /opt/elk-docker/logstash/patterns:/usr/share/logstash/patterns
     env:
       XPACK_MONITORING_ENABLED: "true"
       XPACK_MONITORING_ELASTICSEARCH_HOSTS: "http://elasticsearch:9200" 
