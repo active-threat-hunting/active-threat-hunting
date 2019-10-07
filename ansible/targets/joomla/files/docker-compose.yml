@@ -11,11 +11,10 @@ services:
      - JOOMLA_DB_PASSWORD=JOOMLA_DB_PASSWORD
     volumes:
      - ./root_html:/var/www/html
-    #logging: 
-    #  driver: "syslog"
-    #  options:
-    #    syslog-address: "udp://SYSLOG_SERVER"
-    #    syslog-tag: "joomla"
+    logging: 
+      driver: "syslog"
+      options:
+        syslog-address: "udp://SYSLOG_SERVER"
 
   mysql:
     image: mysql:latest
@@ -32,10 +31,9 @@ services:
     volumes:
      - ./database:/var/lib/mysql
     #logging: 
-    #  driver: "syslog"
-    #  options:
-    #    syslog-address: "udp://SYSLOG_SERVER"
-    #    syslog-tag: "joomla-mysql"
+      #driver: "syslog"
+      #options:
+        #syslog-address: "udp://SYSLOG_SERVER"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:PHPMYADMIN_TAG
@@ -46,7 +44,6 @@ services:
     environment:
      - PMA_HOST=mysql
     #logging: 
-    #  driver: "syslog"
-    #  options:
-    #    syslog-address: "udp://SYSLOG_SERVER"
-    #    syslog-tag: "joomla-phpmyadmin"
+      #driver: "syslog"
+      #options:
+        #syslog-address: "udp://SYSLOG_SERVER"
