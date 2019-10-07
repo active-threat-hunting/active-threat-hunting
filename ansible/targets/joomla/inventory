@@ -1,12 +1,11 @@
 ---
 joomla:
   hosts:
-    192.168.1.5:
+    10.10.10.10:
   vars:
     ansible_ssh_user: ansible
-    ansible_ssh_private_key_file: /Users/ansible/.ssh/id_rsa
+    ansible_ssh_private_key_file: /Users/heywoodlh/.ssh/skynet.heywoody.me/id_rsa
     ansible_python_interpreter: "/usr/bin/env python3"
-    joomla_name: "test_joomla"
     joomla_tag: "3.7.0-apache"
     phpmyadmin_tag: "4.8.1"
     mysql_name: "{{ joomla_name }}_mysql"
