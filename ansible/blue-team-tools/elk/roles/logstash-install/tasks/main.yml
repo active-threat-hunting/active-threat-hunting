@@ -47,7 +47,7 @@
 - name: run logstash docker container
   docker_container:
     name: elk_logstash
-    image: "docker.elastic.co/logstash/logstash:{{ elk_version_tag }}"
+    image: "logstash:{{ elk_version_tag }}"
     restart_policy: unless-stopped
     user: root
     links:
