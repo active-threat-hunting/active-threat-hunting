@@ -65,5 +65,6 @@
       XPACK_MONITORING_ELASTICSEARCH_USERNAME: "elastic"
       XPACK_MONITORING_ELASTICSEARCH_PASSWORD: "{{ xpack_password }}"
     log_options:
-      max-size: "10g"
+      max-size: "200m"
+      max-file: "3"
   become: true

@@ -24,7 +24,8 @@
     volumes:
     - elk_elasticsearch_data:/usr/share/elasticsearch/data
     log_options:
-      max-size: "10g"
+      max-size: "200m"
+      max-file: "3"
     env:
       http.host: "0.0.0.0"
       transport.host: "0.0.0.0"
