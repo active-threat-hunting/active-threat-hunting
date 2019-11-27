@@ -1,0 +1,15 @@
+name: ssh invalid user
+type: frequency
+index: filebeat-*
+
+num_events: 1
+timeframe:
+  minutes: 5
+
+filter:
+- query:
+    query_string: 
+      query: 'sshd AND "invalid user"'
+
+alert:
+- debug
