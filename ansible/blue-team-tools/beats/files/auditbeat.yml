@@ -48,6 +48,20 @@ auditbeat.modules:
   - /usr/sbin
   - /etc
 
+- module: system
+  datasets:
+    - host
+    - login
+    - package
+    - process
+    - socket
+    - user
+  period: 10s
+  state.period: 12h
+
+  socket.include_localhost: false
+
+  user.detect_password_changes: true
 
 #==================== Elasticsearch template setting ==========================
 setup.template.settings:
